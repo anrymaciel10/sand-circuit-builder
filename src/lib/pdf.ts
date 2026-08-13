@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
-import { PRESETS, dinamicaDaEstacao, linkOuNada, type Circuito } from "./circuito-pdf-helpers";
+import { PRESETS, dinamicaDaEstacao, type Circuito } from "./circuito";
+import { linkYoutube } from "@/data/exercises";
 
 export function exportarPDF(circuito: Circuito, titulo: string) {
   const doc = new jsPDF({ unit: "pt", format: "a4" });
@@ -62,7 +63,7 @@ export function exportarPDF(circuito: Circuito, titulo: string) {
       dinamicaDaEstacao(circuito.config.modalidade, ex.nome),
       largura - 16,
     );
-    const link = linkOuNada(ex);
+    const link = linkYoutube(ex);
     const linkLinhas = doc.splitTextToSize(`Vídeo: ${link}`, largura - 16);
     const altura = 26 + (descricao.length + dinamica.length + linkLinhas.length) * 13 + 14;
     novaPaginaSeNecessario(altura);
