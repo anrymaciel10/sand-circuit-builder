@@ -57,7 +57,7 @@ export type Estacao = {
 export type Circuito = {
   id: string;
   criadoEm: number;
-  nome?: string;
+  nome?: string | undefined;
   config: Config;
   aquecimento: Exercicio[];
   estacoes: Estacao[];

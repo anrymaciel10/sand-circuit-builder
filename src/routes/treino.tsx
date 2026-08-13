@@ -4,7 +4,7 @@ import { ArrowLeft, Waves } from "lucide-react";
 import { CircuitoView } from "@/components/CircuitoView";
 import { desserializarCircuito } from "@/lib/circuito";
 
-type Busca = { d?: string };
+type Busca = { d?: string | undefined };
 
 export const Route = createFileRoute("/treino")({
   validateSearch: (search: Record<string, unknown>): Busca => ({
