@@ -1,14 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Waves, Sparkles, ListChecks } from "lucide-react";
+import { Waves, Sparkles, ListChecks, FolderHeart } from "lucide-react";
 import heroAreia from "@/assets/hero-areia.jpg";
 import { EQUIPAMENTOS, FOCOS, type Equipamento, type Foco } from "@/data/exercises";
 import {
+  MODALIDADES,
   PRESETS,
   exerciciosDisponiveis,
   gerarCircuito,
   type Circuito,
   type Formato,
+  type Modalidade,
 } from "@/lib/circuito";
 import { CircuitoView } from "@/components/CircuitoView";
 
@@ -41,6 +43,7 @@ function Home() {
   const [nivel, setNivel] = useState<1 | 2 | 3>(2);
   const [estacoes, setEstacoes] = useState(6);
   const [formato, setFormato] = useState<Formato>("estacoes");
+  const [modalidade, setModalidade] = useState<Modalidade>("individual");
   const [circuito, setCircuito] = useState<Circuito | null>(null);
 
   const disponiveis = useMemo(() => exerciciosDisponiveis(equipamentos).length, [equipamentos]);
@@ -61,6 +64,7 @@ function Home() {
           trabalho: preset.trabalho,
           descanso: preset.descanso,
           formato,
+          modalidade,
         },
         Date.now(),
       ),
@@ -189,6 +193,26 @@ function Home() {
             ))}
           </div>
 
+          <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Treino em dupla ou trio?
+          </p>
+          <div className="mt-2 grid gap-2 sm:grid-cols-3">
+            {MODALIDADES.map((m) => (
+              <button
+                key={m.id}
+                onClick={() => setModalidade(m.id)}
+                className={`rounded-xl border p-3 text-left transition-colors ${
+                  modalidade === m.id
+                    ? "border-accent bg-accent/10"
+                    : "border-border bg-background hover:border-accent"
+                }`}
+              >
+                <p className="font-display text-lg leading-none">{m.nome}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{m.descricao}</p>
+              </button>
+            ))}
+          </div>
+
           <div className="mt-5 flex items-center justify-between">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Estações
@@ -222,6 +246,13 @@ function Home() {
             </p>
           )}
         </div>
+
+        <Link
+          to="/treinos"
+          className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-card px-6 py-3.5 text-sm font-semibold shadow-soft transition hover:border-primary"
+        >
+          <FolderHeart className="size-4 text-primary" /> Meus treinos salvos e favoritos
+        </Link>
 
         <Link
           to="/exercicios"

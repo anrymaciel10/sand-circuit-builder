@@ -7,6 +7,36 @@ import {
 
 export type Formato = "tabata" | "amrap" | "estacoes" | "emom";
 
+export type Modalidade = "individual" | "dupla" | "trio";
+
+export const MODALIDADES: {
+  id: Modalidade;
+  nome: string;
+  descricao: string;
+  dinamica: (nome: string) => string;
+}[] = [
+  {
+    id: "individual",
+    nome: "Individual",
+    descricao: "Cada aluno cumpre o tempo da estação",
+    dinamica: () => "Execute o tempo cheio da estação e troque no sinal.",
+  },
+  {
+    id: "dupla",
+    nome: "Dupla",
+    descricao: "Um trabalha, o outro descansa ou apoia",
+    dinamica: (nome) =>
+      `Aluno A executa ${nome} enquanto B faz o revezamento ativo (corrida leve até o cone). Trocam na metade do tempo.`,
+  },
+  {
+    id: "trio",
+    nome: "Trio",
+    descricao: "Rodízio contínuo entre trabalho, apoio e recuperação",
+    dinamica: (nome) =>
+      `A executa ${nome}, B conta as repetições e corrige a técnica, C faz recuperação ativa. Rodízio a cada 1/3 do tempo.`,
+  },
+];
+
 export type Config = {
   equipamentos: Equipamento[];
   focos: Foco[];
@@ -16,6 +46,7 @@ export type Config = {
   trabalho: number;
   descanso: number;
   formato: Formato;
+  modalidade: Modalidade;
 };
 
 export type Estacao = {
@@ -26,6 +57,7 @@ export type Estacao = {
 export type Circuito = {
   id: string;
   criadoEm: number;
+  nome?: string | undefined;
   config: Config;
   aquecimento: Exercicio[];
   estacoes: Estacao[];
@@ -108,10 +140,57 @@ export const PRESETS: Record<Formato, { nome: string; descricao: string; trabalh
   emom: { nome: "EMOM", descricao: "A cada minuto, um exercício novo", trabalho: 45, descanso: 15, rodadas: 4 },
 };
 
+export function dinamicaDaEstacao(modalidade: Modalidade, nomeExercicio: string) {
+  return (MODALIDADES.find((m) => m.id === modalidade) ?? MODALIDADES[0]!).dinamica(nomeExercicio);
+}
+
+export function serializarCircuito(c: Circuito) {
+  const payload = {
+    c: c.config,
+    e: c.estacoes.map((s) => s.exercicio.id),
+    a: c.aquecimento.map((ex) => ex.id),
+    d: c.duracaoMin,
+    n: c.nome,
+  };
+  return btoa(encodeURIComponent(JSON.stringify(payload)));
+}
+
+export function desserializarCircuito(token: string): Circuito | null {
+  try {
+    const raw = JSON.parse(decodeURIComponent(atob(token))) as {
+      c: Config;
+      e: string[];
+      a: string[];
+      d: number;
+      n?: string;
+    };
+    const byId = (id: string) => EXERCICIOS.find((ex) => ex.id === id);
+    const estacoes = raw.e
+      .map((id, i) => {
+        const ex = byId(id);
+        return ex ? { ordem: i + 1, exercicio: ex } : null;
+      })
+      .filter(Boolean) as Estacao[];
+    if (!estacoes.length) return null;
+    return {
+      id: String(Date.now()),
+      criadoEm: Date.now(),
+      nome: raw.n,
+      config: raw.c,
+      aquecimento: raw.a.map(byId).filter(Boolean) as Exercicio[],
+      estacoes,
+      duracaoMin: raw.d,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function textoCompartilhar(c: Circuito) {
   const p = PRESETS[c.config.formato];
   const linhas = [
     `🏖️ LIFE TRAINING — Circuito Funcional na Areia`,
+    `Modalidade: ${c.config.modalidade}`,
     `Formato: ${p.nome} (${c.config.trabalho}s trabalho / ${c.config.descanso}s descanso) • ${c.config.rodadas} rodadas • ~${c.duracaoMin} min`,
     ``,
     `AQUECIMENTO (5 min):`,
