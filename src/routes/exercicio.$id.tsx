@@ -1,6 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Flame, Sparkles } from "lucide-react";
-import { EQUIPAMENTOS, EXERCICIOS, FOCOS } from "@/data/exercises";
+import { ArrowLeft, Flame, Sparkles, Target, Activity, Instagram } from "lucide-react";
+import {
+  EQUIPAMENTOS,
+  EXERCICIOS,
+  FOCOS,
+  beneficioDoExercicio,
+  musculosDoExercicio,
+} from "@/data/exercises";
+import { PERFIS, buscaNoPerfil } from "@/data/perfis";
 import { BotaoFavorito, ExercicioCard, LinksMidia, useFavoritos } from "@/components/CircuitoView";
 
 export const Route = createFileRoute("/exercicio/$id")({
@@ -60,6 +67,9 @@ function Detalhe() {
             </span>
             <span className="rounded-full bg-white/20 px-3 py-1">{foco?.nome}</span>
             <span className="rounded-full bg-white/20 px-3 py-1">Nível {ex.nivel}</span>
+            {ex.composto && (
+              <span className="rounded-full bg-white/20 px-3 py-1">Exercício combinado</span>
+            )}
           </div>
         </div>
       </div>
@@ -75,6 +85,26 @@ function Detalhe() {
         </section>
 
         <section className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+          <h2 className="flex items-center gap-2 text-xl">
+            <Activity className="size-5 text-primary" /> Músculos trabalhados
+          </h2>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {musculosDoExercicio(ex).map((m) => (
+              <span
+                key={m}
+                className="rounded-full bg-secondary/60 px-3 py-1 text-sm font-semibold text-secondary-foreground"
+              >
+                {m}
+              </span>
+            ))}
+          </div>
+          <h3 className="mt-4 flex items-center gap-2 text-lg">
+            <Target className="size-4 text-accent" /> Para que serve
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">{beneficioDoExercicio(ex)}</p>
+        </section>
+
+        <section className="rounded-2xl border border-border bg-card p-5 shadow-soft">
           <h2 className="text-xl">Vídeos, gifs e imagens</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Referências de execução buscadas por "{ex.busca}".
@@ -82,6 +112,25 @@ function Detalhe() {
           <div className="mt-3">
             <LinksMidia ex={ex} />
           </div>
+          <h3 className="mt-4 flex items-center gap-2 text-lg">
+            <Instagram className="size-4 text-primary" /> Buscar nos perfis de referência
+          </h3>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {PERFIS.slice(0, 6).map((p) => (
+              <a
+                key={p.handle}
+                href={buscaNoPerfil(p, ex.busca)}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs font-semibold hover:bg-primary hover:text-primary-foreground"
+              >
+                @{p.handle}
+              </a>
+            ))}
+          </div>
+          <Link to="/perfis" className="mt-3 inline-block text-sm font-semibold text-accent hover:underline">
+            Ver todos os perfis e pesquisar treinos →
+          </Link>
         </section>
 
         <section className="rounded-2xl border border-border bg-card p-5 shadow-soft">
