@@ -63,6 +63,9 @@ export type Exercicio = {
   descricao: string;
   dica: string;
   busca: string; // termo usado para montar links de vídeo
+  composto?: boolean; // combina duas ações em uma repetição / tem deslocamento
+  musculos?: string[];
+  beneficio?: string;
 };
 
 const e = (
@@ -75,6 +78,32 @@ const e = (
   dica: string,
   busca?: string,
 ): Exercicio => ({ id, nome, equipamento, foco, nivel, descricao, dica, busca: busca ?? nome });
+
+// combinados: dois movimentos numa repetição ou com deslocamento
+const c = (
+  id: string,
+  nome: string,
+  equipamento: Equipamento,
+  foco: Foco,
+  nivel: 1 | 2 | 3,
+  descricao: string,
+  dica: string,
+  busca: string,
+  musculos: string[],
+  beneficio: string,
+): Exercicio => ({
+  id,
+  nome,
+  equipamento,
+  foco,
+  nivel,
+  descricao,
+  dica,
+  busca,
+  composto: true,
+  musculos,
+  beneficio,
+});
 
 export const EXERCICIOS: Exercicio[] = [
   // Peso corporal
@@ -170,7 +199,145 @@ export const EXERCICIOS: Exercicio[] = [
   e("cl3", "Superman", "colchonete", "core", 1, "Em decúbito ventral, eleve braços e pernas.", "Fortalece a cadeia posterior.", "exercicio superman lombar"),
   e("bl1", "Passe de peito com bola em dupla", "bola", "cardio", 1, "Passes rápidos alternando com deslocamento lateral.", "Ótimo para dinâmica em grupo.", "passe de peito em dupla treino"),
   e("bl2", "Circuito com domínio de bola", "bola", "agilidade", 2, "Conduza a bola entre cones na areia.", "Integra coordenação e cardio.", "conducao de bola na areia"),
+
+  // ===== COMBINADOS: duas ações numa repetição / com deslocamento =====
+  c("cb1", "Agachamento + deslocamento lateral", "peso-corporal", "agilidade", 1,
+    "Agacha, sobe e corre 3 passos laterais; agacha de novo do outro lado.",
+    "Pés nunca se cruzam no deslocamento e o quadril fica baixo.",
+    "agachamento com deslocamento lateral funcional",
+    ["Quadríceps", "Glúteo médio", "Glúteo máximo", "Adutores", "Panturrilhas"],
+    "Une força de pernas e mudança de direção — melhora arranque lateral e estabilidade do joelho na areia."),
+  c("cb2", "Agachamento com salto + sprint 10 m", "peso-corporal", "potencia", 2,
+    "3 saltos verticais a partir do agachamento e emenda um sprint curto.",
+    "Transição imediata: o último salto já vira a primeira passada.",
+    "agachamento salto sprint treino funcional",
+    ["Quadríceps", "Glúteos", "Isquiotibiais", "Panturrilhas", "Core"],
+    "Transfere potência de salto para aceleração, exatamente o gesto do futevôlei e do beach tennis."),
+  c("cb3", "Afundo com rotação de tronco", "peso-corporal", "core", 1,
+    "A cada passada, gire o tronco para o lado da perna da frente.",
+    "Gire a partir das costelas, mantendo o quadril de frente.",
+    "afundo com rotacao de tronco",
+    ["Quadríceps", "Glúteos", "Oblíquos", "Transverso do abdome"],
+    "Combina força unilateral e rotação: melhora equilíbrio e o giro do tronco em chutes e saques."),
+  c("cb4", "Burpee + salto lateral no cone", "cones", "cardio", 2,
+    "Burpee completo e, ao levantar, salto lateral por cima do cone; repete do outro lado.",
+    "Aterrissagem macia, joelho alinhado ao pé.",
+    "burpee com salto lateral cone",
+    ["Peitoral", "Tríceps", "Quadríceps", "Glúteos", "Core", "Sistema cardiorrespiratório"],
+    "Estação metabólica completa: condicionamento, potência de salto e controle de aterrissagem."),
+  c("cb5", "Prancha com deslocamento lateral (walkout)", "peso-corporal", "core", 2,
+    "Em prancha alta, caminhe com mãos e pés 4 apoios para cada lado.",
+    "Quadril na altura dos ombros, sem balançar.",
+    "prancha com deslocamento lateral",
+    ["Transverso do abdome", "Oblíquos", "Deltoide anterior", "Serrátil", "Peitoral"],
+    "Core anti-rotação em movimento — protege a lombar e melhora estabilidade de ombro."),
+  c("cb6", "Agachamento + arremesso da bola medicinal", "bola-medicinal", "potencia", 2,
+    "Desce no agachamento com a bola no peito e explode arremessando para o parceiro.",
+    "A força sai das pernas; braços só finalizam.",
+    "agachamento com arremesso bola medicinal",
+    ["Quadríceps", "Glúteos", "Deltoides", "Tríceps", "Core"],
+    "Triple extension: ensina a transferir força do chão para os braços, base de todo gesto explosivo."),
+  c("cb7", "Kettlebell swing + agachamento", "kettlebell", "potencia", 2,
+    "Dois swings e um goblet squat, em fluxo contínuo.",
+    "Swing é dobradiça de quadril; squat é flexão de joelho. Sinta a diferença.",
+    "kettlebell swing goblet squat complex",
+    ["Glúteos", "Isquiotibiais", "Quadríceps", "Lombar", "Antebraços"],
+    "Trabalha cadeia posterior e anterior no mesmo bloco, elevando muito o gasto calórico."),
+  c("cb8", "Thruster + passada lateral", "halteres", "cardio", 3,
+    "Thruster completo e, ao descer os halteres, dê dois passos laterais antes da próxima repetição.",
+    "Respire no topo do movimento.",
+    "thruster com deslocamento lateral halteres",
+    ["Quadríceps", "Glúteos", "Deltoides", "Tríceps", "Core"],
+    "Corpo inteiro com deslocamento: alta demanda cardiovascular em pouco tempo."),
+  c("cb9", "Farmer walk + agachamento a cada 10 passos", "kettlebell", "forca", 2,
+    "Caminhada carregada; a cada 10 passos, um agachamento com a carga.",
+    "Ombros para trás e passo firme na areia fofa.",
+    "farmer walk com agachamento",
+    ["Trapézio", "Antebraços", "Core", "Quadríceps", "Glúteos"],
+    "Força de preensão e estabilidade de tronco sob carga em deslocamento."),
+  c("cb10", "Escada de agilidade + sprint de saída", "escada-agilidade", "agilidade", 2,
+    "Passa a escada em cadência alta e emenda 10 m de sprint.",
+    "Sai da escada já em aceleração, sem pausar.",
+    "escada de agilidade com sprint",
+    ["Panturrilhas", "Quadríceps", "Flexores do quadril", "Core"],
+    "Liga frequência de passo e aceleração — clássico para velocidade nos primeiros metros."),
+  c("cb11", "Slam ball + burpee + deslocamento", "slam-ball", "cardio", 3,
+    "Slam na areia, burpee sobre a bola e três passos laterais para repetir do outro lado.",
+    "Expire forte no impacto da bola.",
+    "slam ball burpee deslocamento",
+    ["Dorsais", "Core", "Ombros", "Quadríceps", "Glúteos", "Sistema cardiorrespiratório"],
+    "Estação de alta intensidade que combina potência, condicionamento e agilidade."),
+  c("cb12", "Remada com elástico + passada para trás", "elastico", "forca", 1,
+    "Puxa o elástico até as costelas e, ao soltar, dê uma passada atrás em afundo.",
+    "Escápulas retraídas durante toda a puxada.",
+    "remada com elastico e afundo",
+    ["Dorsais", "Romboides", "Bíceps", "Glúteos", "Quadríceps"],
+    "Postura e força de puxada somadas ao trabalho unilateral de perna."),
+  c("cb13", "Prancha com toque no ombro + salto para agachamento", "peso-corporal", "core", 2,
+    "4 toques alternados nos ombros, salte os pés para as mãos e finalize em agachamento.",
+    "Quadril firme nos toques, sem rodar.",
+    "prancha toque no ombro squat jump in",
+    ["Core", "Ombros", "Peitoral", "Quadríceps", "Glúteos"],
+    "Sequência que exige controle de tronco e transição rápida do chão para de pé."),
+  c("cb14", "Corrida em ziguezague + burpee no cone", "cones", "cardio", 2,
+    "Slalom entre os cones e um burpee ao chegar no último cone; volta correndo.",
+    "Use os braços na virada para não perder velocidade.",
+    "ziguezague com burpee treino funcional",
+    ["Quadríceps", "Glúteos", "Adutores", "Peitoral", "Core"],
+    "Mistura agilidade e condicionamento — ideal para fechar o circuito em grupo."),
+  c("cb15", "Step up + joelhada explosiva", "step", "potencia", 2,
+    "Sobe no caixote e finaliza levando o joelho oposto à altura do peito com salto.",
+    "Empurre com o calcanhar da perna de apoio.",
+    "step up com joelhada explosiva",
+    ["Glúteos", "Quadríceps", "Flexores do quadril", "Panturrilhas", "Core"],
+    "Potência unilateral e equilíbrio dinâmico, muito próximo do gesto da corrida."),
+  c("cb16", "Ondas na corda naval + deslocamento lateral", "corda-naval", "cardio", 3,
+    "Mantém as ondas alternadas enquanto anda dois passos para cada lado.",
+    "Cadência dos braços não pode cair no deslocamento.",
+    "battle rope com deslocamento lateral",
+    ["Ombros", "Antebraços", "Core", "Glúteo médio", "Quadríceps"],
+    "Braços em esforço contínuo com pernas em deslocamento: pico cardiovascular."),
 ];
+
+// ---- músculos e objetivo (explícito quando existe, inferido pelo padrão de movimento) ----
+const REGRAS_MUSCULOS: { termo: RegExp; musculos: string[] }[] = [
+  { termo: /sprint|corrida|corr[ei]|skipping|tiro|shuttle|paraqued/i, musculos: ["Quadríceps", "Isquiotibiais", "Glúteos", "Panturrilhas"] },
+  { termo: /agachamento|squat|step up|afundo|passada|box jump|salto/i, musculos: ["Quadríceps", "Glúteos", "Isquiotibiais", "Panturrilhas"] },
+  { termo: /flex[aã]o de bra|flexao|push|supino|empurr|chest/i, musculos: ["Peitoral", "Tríceps", "Deltoide anterior"] },
+  { termo: /remada|puxada|invertida|dorsal/i, musculos: ["Dorsais", "Romboides", "Bíceps"] },
+  { termo: /prancha|abdominal|core|twist|pallof|climber|bear crawl|superman|knee tuck/i, musculos: ["Transverso do abdome", "Reto abdominal", "Oblíquos"] },
+  { termo: /ombro|desenvolvimento|overhead|press|corda naval|battle/i, musculos: ["Deltoides", "Trapézio", "Core"] },
+  { termo: /swing|clean|arremesso|slam|good morning|ponte|gl[uú]teo|deadlift/i, musculos: ["Glúteos", "Isquiotibiais", "Lombar", "Core"] },
+  { termo: /lateral|mini band|monster|adut|band/i, musculos: ["Glúteo médio", "Adutores", "Quadríceps"] },
+  { termo: /corda|pular|escada|aros|agilidade|ziguezague/i, musculos: ["Panturrilhas", "Quadríceps", "Core"] },
+  { termo: /farmer|carreg|pneu|bast[aã]o/i, musculos: ["Antebraços", "Trapézio", "Core", "Glúteos"] },
+];
+
+const BENEFICIO_POR_FOCO: Record<Foco, string> = {
+  forca: "Ganho de força e resistência muscular; deixa o aluno mais firme nos apoios e protege as articulações.",
+  potencia: "Desenvolve explosão e velocidade de contração — salto, arranque e mudança de ritmo.",
+  cardio: "Eleva o condicionamento cardiorrespiratório e o gasto calórico da aula.",
+  core: "Estabiliza tronco e lombar, melhorando postura e transferência de força entre pernas e braços.",
+  agilidade: "Aprimora coordenação, tempo de reação e mudança de direção na areia.",
+  equilibrio: "Trabalha propriocepção e controle articular, essencial no terreno instável da areia.",
+};
+
+export function musculosDoExercicio(ex: Exercicio): string[] {
+  if (ex.musculos?.length) return ex.musculos;
+  const texto = `${ex.nome} ${ex.descricao} ${ex.busca}`;
+  const encontrados = new Set<string>();
+  for (const r of REGRAS_MUSCULOS) {
+    if (r.termo.test(texto)) r.musculos.forEach((m) => encontrados.add(m));
+  }
+  if (encontrados.size === 0) {
+    return ["Corpo inteiro", "Core"];
+  }
+  return [...encontrados].slice(0, 5);
+}
+
+export function beneficioDoExercicio(ex: Exercicio): string {
+  return ex.beneficio ?? BENEFICIO_POR_FOCO[ex.foco];
+}
 
 export function linkYoutube(ex: Exercicio) {
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.busca)}`;
