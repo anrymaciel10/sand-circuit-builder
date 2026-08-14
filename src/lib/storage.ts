@@ -51,6 +51,18 @@ export function removerTreino(id: string) {
   );
 }
 
+/** Atualiza nome e/ou conteúdo de um treino salvo */
+export function atualizarTreino(id: string, circuito: Circuito, nome: string): TreinoSalvo[] {
+  const nomeFinal = nome.trim() || "Treino sem nome";
+  const atualizados = listarTreinos().map((t) =>
+    t.id === id
+      ? { ...t, nome: nomeFinal, token: serializarCircuito({ ...circuito, nome: nomeFinal }) }
+      : t,
+  );
+  gravar(K_TREINOS, atualizados);
+  return atualizados;
+}
+
 export function circuitoDoTreino(treino: TreinoSalvo) {
   return desserializarCircuito(treino.token);
 }

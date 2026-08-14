@@ -47,6 +47,7 @@ export type Config = {
   descanso: number;
   formato: Formato;
   modalidade: Modalidade;
+  compostos?: boolean; // priorizar exercícios combinados / com deslocamento
 };
 
 export type Estacao = {
@@ -93,7 +94,10 @@ export function gerarCircuito(config: Config, seed = Date.now()): Circuito {
     : base;
 
   const pool = comFoco.length >= 3 ? comFoco : base;
-  const sorteados = embaralhar(pool, seed);
+  const embaralhados = embaralhar(pool, seed);
+  const sorteados = config.compostos
+    ? [...embaralhados].sort((a, b) => Number(!!b.composto) - Number(!!a.composto))
+    : embaralhados;
 
   // distribui alternando focos para não repetir o mesmo estímulo em sequência
   const estacoes: Estacao[] = [];
