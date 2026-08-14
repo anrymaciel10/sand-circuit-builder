@@ -16,8 +16,16 @@ import {
   Users,
   ChevronRight,
   Check,
+  Target,
 } from "lucide-react";
-import { linkGif, linkInstagram, linkYoutube, type Exercicio } from "@/data/exercises";
+import {
+  beneficioDoExercicio,
+  linkGif,
+  linkInstagram,
+  linkYoutube,
+  musculosDoExercicio,
+  type Exercicio,
+} from "@/data/exercises";
 import {
   PRESETS,
   dinamicaDaEstacao,
@@ -119,11 +127,28 @@ export function ExercicioCard({
               {FOCO_LABEL[ex.foco]}
             </span>
             <span>Nível {ex.nivel}</span>
+            {ex.composto && (
+              <span className="rounded-full bg-primary/15 px-2 py-0.5 text-primary">Combinado</span>
+            )}
           </div>
           <p className="mt-2 text-sm text-muted-foreground">{ex.descricao}</p>
           <p className="mt-1 text-sm text-foreground/80">
             <Flame className="mr-1 inline size-3.5 text-primary" />
             {ex.dica}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {musculosDoExercicio(ex).map((m) => (
+              <span
+                key={m}
+                className="rounded-full bg-secondary/60 px-2 py-0.5 text-[11px] font-semibold text-secondary-foreground"
+              >
+                {m}
+              </span>
+            ))}
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            <Target className="mr-1 inline size-3.5 text-accent" />
+            {beneficioDoExercicio(ex)}
           </p>
           {dinamica && (
             <p className="mt-2 rounded-xl bg-accent/10 p-2.5 text-sm text-foreground/80">
