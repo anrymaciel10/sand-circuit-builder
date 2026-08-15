@@ -1,9 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, CalendarDays, Heart, Trash2 } from "lucide-react";
+import { ArrowLeft, CalendarDays, Heart, Pencil, Trash2 } from "lucide-react";
 import { EXERCICIOS } from "@/data/exercises";
 import { CircuitoView, ExercicioCard, useFavoritos } from "@/components/CircuitoView";
-import { circuitoDoTreino, listarTreinos, removerTreino, type TreinoSalvo } from "@/lib/storage";
+import { EditorTreino } from "@/components/EditorTreino";
+import {
+  atualizarTreino,
+  circuitoDoTreino,
+  listarTreinos,
+  removerTreino,
+  type TreinoSalvo,
+} from "@/lib/storage";
 import type { Circuito } from "@/lib/circuito";
 
 export const Route = createFileRoute("/treinos")({
@@ -28,6 +35,8 @@ export const Route = createFileRoute("/treinos")({
 function MeusTreinos() {
   const [treinos, setTreinos] = useState<TreinoSalvo[]>([]);
   const [aberto, setAberto] = useState<Circuito | null>(null);
+  const [editando, setEditando] = useState<{ treino: TreinoSalvo; circuito: Circuito } | null>(null);
+  const [aviso, setAviso] = useState("");
   const [aba, setAba] = useState<"treinos" | "favoritos">("treinos");
   const { favoritos, alternar } = useFavoritos();
 
@@ -37,6 +46,24 @@ function MeusTreinos() {
     removerTreino(id);
     setTreinos(listarTreinos());
     setAberto(null);
+    setEditando(null);
+  };
+
+  const abrirEdicao = (t: TreinoSalvo) => {
+    const circuito = circuitoDoTreino(t);
+    if (!circuito) return;
+    setAberto(null);
+    setEditando({ treino: t, circuito });
+  };
+
+  const salvarEdicao = (circuito: Circuito, nome: string) => {
+    if (!editando) return;
+    atualizarTreino(editando.treino.id, circuito, nome);
+    setTreinos(listarTreinos());
+    setEditando(null);
+    setAberto({ ...circuito, nome });
+    setAviso("Treino atualizado.");
+    window.setTimeout(() => setAviso(""), 2500);
   };
 
   const favoritados = EXERCICIOS.filter((ex) => favoritos.includes(ex.id));
@@ -95,6 +122,13 @@ function MeusTreinos() {
                     Abrir
                   </button>
                   <button
+                    onClick={() => abrirEdicao(t)}
+                    aria-label="Editar treino"
+                    className="rounded-xl border border-border p-2 text-muted-foreground hover:text-primary"
+                  >
+                    <Pencil className="size-4" />
+                  </button>
+                  <button
                     onClick={() => excluir(t.id)}
                     aria-label="Excluir treino"
                     className="rounded-xl border border-border p-2 text-muted-foreground hover:text-destructive"
@@ -105,7 +139,20 @@ function MeusTreinos() {
               </div>
             ))}
 
-            {aberto && (
+            {aviso && <p className="text-sm font-semibold text-accent">{aviso}</p>}
+
+            {editando && (
+              <div className="pt-2">
+                <EditorTreino
+                  circuito={editando.circuito}
+                  nomeInicial={editando.treino.nome}
+                  onSalvar={salvarEdicao}
+                  onCancelar={() => setEditando(null)}
+                />
+              </div>
+            )}
+
+            {aberto && !editando && (
               <div className="pt-2">
                 <CircuitoView circuito={aberto} />
               </div>

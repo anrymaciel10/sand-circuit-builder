@@ -1,6 +1,6 @@
 import { jsPDF } from "jspdf";
 import { PRESETS, dinamicaDaEstacao, type Circuito } from "./circuito";
-import { linkYoutube } from "@/data/exercises";
+import { linkYoutube, musculosDoExercicio } from "@/data/exercises";
 
 export function exportarPDF(circuito: Circuito, titulo: string) {
   const doc = new jsPDF({ unit: "pt", format: "a4" });
@@ -59,13 +59,18 @@ export function exportarPDF(circuito: Circuito, titulo: string) {
   circuito.estacoes.forEach((est) => {
     const ex = est.exercicio;
     const descricao = doc.splitTextToSize(ex.descricao, largura - 16);
+    const musculos = doc.splitTextToSize(
+      `Musculos: ${musculosDoExercicio(ex).join(", ")}`,
+      largura - 16,
+    );
     const dinamica = doc.splitTextToSize(
       dinamicaDaEstacao(circuito.config.modalidade, ex.nome),
       largura - 16,
     );
     const link = linkYoutube(ex);
     const linkLinhas = doc.splitTextToSize(`Vídeo: ${link}`, largura - 16);
-    const altura = 26 + (descricao.length + dinamica.length + linkLinhas.length) * 13 + 14;
+    const altura =
+      26 + (descricao.length + musculos.length + dinamica.length + linkLinhas.length) * 13 + 14;
     novaPaginaSeNecessario(altura);
 
     doc.setDrawColor(226, 214, 198);
@@ -83,6 +88,10 @@ export function exportarPDF(circuito: Circuito, titulo: string) {
     doc.setTextColor(60, 52, 44);
     doc.text(descricao, margem + 10, y);
     y += descricao.length * 13;
+    doc.setTextColor(110, 98, 86);
+    doc.text(musculos, margem + 10, y);
+    y += musculos.length * 13;
+    doc.setTextColor(60, 52, 44);
     doc.text(dinamica, margem + 10, y);
     y += dinamica.length * 13;
     doc.setTextColor(30, 90, 120);

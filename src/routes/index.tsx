@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Waves, Sparkles, ListChecks, FolderHeart } from "lucide-react";
+import { Waves, Sparkles, ListChecks, FolderHeart, Instagram } from "lucide-react";
 import heroAreia from "@/assets/hero-areia.jpg";
 import { EQUIPAMENTOS, FOCOS, type Equipamento, type Foco } from "@/data/exercises";
 import {
@@ -44,6 +44,7 @@ function Home() {
   const [estacoes, setEstacoes] = useState(6);
   const [formato, setFormato] = useState<Formato>("estacoes");
   const [modalidade, setModalidade] = useState<Modalidade>("individual");
+  const [compostos, setCompostos] = useState(true);
   const [circuito, setCircuito] = useState<Circuito | null>(null);
 
   const disponiveis = useMemo(() => exerciciosDisponiveis(equipamentos).length, [equipamentos]);
@@ -65,6 +66,7 @@ function Home() {
           descanso: preset.descanso,
           formato,
           modalidade,
+          compostos,
         },
         Date.now(),
       ),
@@ -227,6 +229,32 @@ function Home() {
             onChange={(ev) => setEstacoes(Number(ev.target.value))}
             className="mt-2 w-full accent-[oklch(0.652_0.178_44)]"
           />
+
+          <button
+            onClick={() => setCompostos((v) => !v)}
+            className={`mt-5 flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors ${
+              compostos ? "border-primary bg-primary/10" : "border-border bg-background"
+            }`}
+          >
+            <span
+              className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-md border text-xs font-bold ${
+                compostos
+                  ? "border-transparent bg-sunset text-primary-foreground"
+                  : "border-border"
+              }`}
+            >
+              {compostos ? "✓" : ""}
+            </span>
+            <span>
+              <span className="block font-display text-lg leading-none">
+                Priorizar exercícios combinados
+              </span>
+              <span className="mt-1 block text-xs text-muted-foreground">
+                Movimentos com deslocamento ou duas ações em uma repetição (ex: agachar e correr
+                lateralmente).
+              </span>
+            </span>
+          </button>
         </section>
 
         <button
@@ -259,6 +287,13 @@ function Home() {
           className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-card px-6 py-3.5 text-sm font-semibold shadow-soft transition hover:border-accent"
         >
           <ListChecks className="size-4 text-accent" /> Ver biblioteca completa de exercícios
+        </Link>
+
+        <Link
+          to="/perfis"
+          className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-card px-6 py-3.5 text-sm font-semibold shadow-soft transition hover:border-primary"
+        >
+          <Instagram className="size-4 text-primary" /> Pesquisar treinos nos perfis de referência
         </Link>
       </div>
     </main>

@@ -26,15 +26,17 @@ export const Route = createFileRoute("/exercicios")({
 function Biblioteca() {
   const [filtro, setFiltro] = useState<Equipamento | "todos">("todos");
   const [busca, setBusca] = useState("");
+  const [soCombinados, setSoCombinados] = useState(false);
 
   const lista = useMemo(
     () =>
       EXERCICIOS.filter(
         (ex) =>
           (filtro === "todos" || ex.equipamento === filtro) &&
+          (!soCombinados || ex.composto) &&
           ex.nome.toLowerCase().includes(busca.toLowerCase()),
       ),
-    [filtro, busca],
+    [filtro, busca, soCombinados],
   );
 
   return (
@@ -60,6 +62,17 @@ function Biblioteca() {
             className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
         </div>
+
+        <button
+          onClick={() => setSoCombinados((v) => !v)}
+          className={`mt-3 w-full rounded-xl border px-4 py-2.5 text-sm font-semibold transition-colors ${
+            soCombinados
+              ? "border-transparent bg-sunset text-primary-foreground"
+              : "border-border bg-card hover:border-primary"
+          }`}
+        >
+          Só exercícios combinados / com deslocamento
+        </button>
 
         <div className="mt-3 flex gap-2 overflow-x-auto pb-2">
           {[{ id: "todos" as const, nome: "Todos", emoji: "🏖️" }, ...EQUIPAMENTOS].map((eq) => (
