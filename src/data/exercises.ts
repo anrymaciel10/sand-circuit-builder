@@ -66,6 +66,9 @@ export type Exercicio = {
   composto?: boolean; // combina duas ações em uma repetição / tem deslocamento
   musculos?: string[];
   beneficio?: string;
+  /** exercício importado por link (vídeo próprio, post do Instagram, Drive, etc.) */
+  url?: string;
+  origem?: string;
 };
 
 const e = (
