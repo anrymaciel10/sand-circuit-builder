@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExerciciosRouteImport } from './routes/exercicios'
+import { Route as ImportarRouteImport } from './routes/importar'
 import { Route as PerfisRouteImport } from './routes/perfis'
 import { Route as TreinoRouteImport } from './routes/treino'
 import { Route as TreinosRouteImport } from './routes/treinos'
@@ -24,6 +25,11 @@ const IndexRoute = IndexRouteImport.update({
 const ExerciciosRoute = ExerciciosRouteImport.update({
   id: '/exercicios',
   path: '/exercicios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportarRoute = ImportarRouteImport.update({
+  id: '/importar',
+  path: '/importar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PerfisRoute = PerfisRouteImport.update({
@@ -50,6 +56,7 @@ const ExercicioIdRoute = ExercicioIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/exercicios': typeof ExerciciosRoute
+  '/importar': typeof ImportarRoute
   '/perfis': typeof PerfisRoute
   '/treino': typeof TreinoRoute
   '/treinos': typeof TreinosRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/exercicios': typeof ExerciciosRoute
+  '/importar': typeof ImportarRoute
   '/perfis': typeof PerfisRoute
   '/treino': typeof TreinoRoute
   '/treinos': typeof TreinosRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/exercicios': typeof ExerciciosRoute
+  '/importar': typeof ImportarRoute
   '/perfis': typeof PerfisRoute
   '/treino': typeof TreinoRoute
   '/treinos': typeof TreinosRoute
@@ -75,14 +84,27 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/exercicios' | '/perfis' | '/treino' | '/treinos' | '/exercicio/$id'
+    | '/'
+    | '/exercicios'
+    | '/importar'
+    | '/perfis'
+    | '/treino'
+    | '/treinos'
+    | '/exercicio/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/exercicios' | '/perfis' | '/treino' | '/treinos' | '/exercicio/$id'
+    | '/'
+    | '/exercicios'
+    | '/importar'
+    | '/perfis'
+    | '/treino'
+    | '/treinos'
+    | '/exercicio/$id'
   id:
     | '__root__'
     | '/'
     | '/exercicios'
+    | '/importar'
     | '/perfis'
     | '/treino'
     | '/treinos'
@@ -92,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ExerciciosRoute: typeof ExerciciosRoute
+  ImportarRoute: typeof ImportarRoute
   PerfisRoute: typeof PerfisRoute
   TreinoRoute: typeof TreinoRoute
   TreinosRoute: typeof TreinosRoute
@@ -112,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/exercicios'
       fullPath: '/exercicios'
       preLoaderRoute: typeof ExerciciosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/importar': {
+      id: '/importar'
+      path: '/importar'
+      fullPath: '/importar'
+      preLoaderRoute: typeof ImportarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/perfis': {
@@ -148,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ExerciciosRoute: ExerciciosRoute,
+  ImportarRoute: ImportarRoute,
   PerfisRoute: PerfisRoute,
   TreinoRoute: TreinoRoute,
   TreinosRoute: TreinosRoute,

@@ -1,5 +1,5 @@
 import {
-  EXERCICIOS,
+  todosExercicios,
   type Equipamento,
   type Exercicio,
   type Foco,
@@ -81,7 +81,7 @@ function embaralhar<T>(arr: T[], seed: number): T[] {
 
 export function exerciciosDisponiveis(equipamentos: Equipamento[]) {
   if (equipamentos.length === 0) return [];
-  return EXERCICIOS.filter((ex) => equipamentos.includes(ex.equipamento));
+  return todosExercicios().filter((ex) => equipamentos.includes(ex.equipamento));
 }
 
 export function gerarCircuito(config: Config, seed = Date.now()): Circuito {
@@ -168,7 +168,7 @@ export function desserializarCircuito(token: string): Circuito | null {
       d: number;
       n?: string;
     };
-    const byId = (id: string) => EXERCICIOS.find((ex) => ex.id === id);
+    const byId = (id: string) => todosExercicios().find((ex) => ex.id === id);
     const estacoes = raw.e
       .map((id, i) => {
         const ex = byId(id);

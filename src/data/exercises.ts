@@ -66,6 +66,9 @@ export type Exercicio = {
   composto?: boolean; // combina duas ações em uma repetição / tem deslocamento
   musculos?: string[];
   beneficio?: string;
+  /** exercício importado por link (vídeo próprio, post do Instagram, Drive, etc.) */
+  url?: string;
+  origem?: string;
 };
 
 const e = (
@@ -543,6 +546,7 @@ export function beneficioDoExercicio(ex: Exercicio): string {
 }
 
 export function linkYoutube(ex: Exercicio) {
+  if (ex.url) return ex.url;
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.busca)}`;
 }
 export function linkInstagram(ex: Exercicio) {
@@ -552,4 +556,16 @@ export function linkInstagram(ex: Exercicio) {
 }
 export function linkGif(ex: Exercicio) {
   return `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(ex.busca + " gif")}`;
+}
+
+/** Exercícios importados pelo usuário (carregados do dispositivo no client). */
+export const EXERCICIOS_EXTRA: Exercicio[] = [];
+
+export function definirExerciciosExtra(lista: Exercicio[]) {
+  EXERCICIOS_EXTRA.splice(0, EXERCICIOS_EXTRA.length, ...lista);
+}
+
+/** Base completa: catálogo + importados por link. */
+export function todosExercicios(): Exercicio[] {
+  return [...EXERCICIOS, ...EXERCICIOS_EXTRA];
 }
