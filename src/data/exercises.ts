@@ -557,3 +557,15 @@ export function linkInstagram(ex: Exercicio) {
 export function linkGif(ex: Exercicio) {
   return `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(ex.busca + " gif")}`;
 }
+
+/** Exercícios importados pelo usuário (carregados do dispositivo no client). */
+export const EXERCICIOS_EXTRA: Exercicio[] = [];
+
+export function definirExerciciosExtra(lista: Exercicio[]) {
+  EXERCICIOS_EXTRA.splice(0, EXERCICIOS_EXTRA.length, ...lista);
+}
+
+/** Base completa: catálogo + importados por link. */
+export function todosExercicios(): Exercicio[] {
+  return [...EXERCICIOS, ...EXERCICIOS_EXTRA];
+}
