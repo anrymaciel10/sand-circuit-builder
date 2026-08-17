@@ -546,6 +546,7 @@ export function beneficioDoExercicio(ex: Exercicio): string {
 }
 
 export function linkYoutube(ex: Exercicio) {
+  if (ex.url) return ex.url;
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.busca)}`;
 }
 export function linkInstagram(ex: Exercicio) {
