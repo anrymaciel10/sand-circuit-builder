@@ -10,8 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AcervoRouteImport } from './routes/acervo'
+import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as ImportarRouteImport } from './routes/importar'
+import { Route as PacksRouteImport } from './routes/packs'
 import { Route as PerfisRouteImport } from './routes/perfis'
 import { Route as TreinoRouteImport } from './routes/treino'
 import { Route as TreinosRouteImport } from './routes/treinos'
@@ -22,6 +25,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcervoRoute = AcervoRouteImport.update({
+  id: '/acervo',
+  path: '/acervo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BibliotecaRoute = BibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExerciciosRoute = ExerciciosRouteImport.update({
   id: '/exercicios',
   path: '/exercicios',
@@ -30,6 +43,11 @@ const ExerciciosRoute = ExerciciosRouteImport.update({
 const ImportarRoute = ImportarRouteImport.update({
   id: '/importar',
   path: '/importar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PacksRoute = PacksRouteImport.update({
+  id: '/packs',
+  path: '/packs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PerfisRoute = PerfisRouteImport.update({
@@ -55,8 +73,11 @@ const ExercicioIdRoute = ExercicioIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/acervo': typeof AcervoRoute
+  '/biblioteca': typeof BibliotecaRoute
   '/exercicios': typeof ExerciciosRoute
   '/importar': typeof ImportarRoute
+  '/packs': typeof PacksRoute
   '/perfis': typeof PerfisRoute
   '/treino': typeof TreinoRoute
   '/treinos': typeof TreinosRoute
@@ -64,8 +85,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/acervo': typeof AcervoRoute
+  '/biblioteca': typeof BibliotecaRoute
   '/exercicios': typeof ExerciciosRoute
   '/importar': typeof ImportarRoute
+  '/packs': typeof PacksRoute
   '/perfis': typeof PerfisRoute
   '/treino': typeof TreinoRoute
   '/treinos': typeof TreinosRoute
@@ -74,8 +98,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/acervo': typeof AcervoRoute
+  '/biblioteca': typeof BibliotecaRoute
   '/exercicios': typeof ExerciciosRoute
   '/importar': typeof ImportarRoute
+  '/packs': typeof PacksRoute
   '/perfis': typeof PerfisRoute
   '/treino': typeof TreinoRoute
   '/treinos': typeof TreinosRoute
@@ -85,8 +112,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/acervo'
+    | '/biblioteca'
     | '/exercicios'
     | '/importar'
+    | '/packs'
     | '/perfis'
     | '/treino'
     | '/treinos'
@@ -94,8 +124,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/acervo'
+    | '/biblioteca'
     | '/exercicios'
     | '/importar'
+    | '/packs'
     | '/perfis'
     | '/treino'
     | '/treinos'
@@ -103,8 +136,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/acervo'
+    | '/biblioteca'
     | '/exercicios'
     | '/importar'
+    | '/packs'
     | '/perfis'
     | '/treino'
     | '/treinos'
@@ -113,8 +149,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AcervoRoute: typeof AcervoRoute
+  BibliotecaRoute: typeof BibliotecaRoute
   ExerciciosRoute: typeof ExerciciosRoute
   ImportarRoute: typeof ImportarRoute
+  PacksRoute: typeof PacksRoute
   PerfisRoute: typeof PerfisRoute
   TreinoRoute: typeof TreinoRoute
   TreinosRoute: typeof TreinosRoute
@@ -130,6 +169,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acervo': {
+      id: '/acervo'
+      path: '/acervo'
+      fullPath: '/acervo'
+      preLoaderRoute: typeof AcervoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/biblioteca': {
+      id: '/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/biblioteca'
+      preLoaderRoute: typeof BibliotecaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exercicios': {
       id: '/exercicios'
       path: '/exercicios'
@@ -142,6 +195,13 @@ declare module '@tanstack/react-router' {
       path: '/importar'
       fullPath: '/importar'
       preLoaderRoute: typeof ImportarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/packs': {
+      id: '/packs'
+      path: '/packs'
+      fullPath: '/packs'
+      preLoaderRoute: typeof PacksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/perfis': {
@@ -177,8 +237,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AcervoRoute: AcervoRoute,
+  BibliotecaRoute: BibliotecaRoute,
   ExerciciosRoute: ExerciciosRoute,
   ImportarRoute: ImportarRoute,
+  PacksRoute: PacksRoute,
   PerfisRoute: PerfisRoute,
   TreinoRoute: TreinoRoute,
   TreinosRoute: TreinosRoute,
