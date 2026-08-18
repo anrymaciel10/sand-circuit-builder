@@ -295,6 +295,33 @@ function Home() {
         >
           <Instagram className="size-4 text-primary" /> Pesquisar treinos nos perfis de referência
         </Link>
+
+        <div className="grid grid-cols-2 gap-3">
+          <Link
+            to="/packs"
+            className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card px-4 py-4 text-center text-sm font-semibold shadow-soft transition hover:border-accent"
+          >
+            <span className="text-2xl">🎁</span> Packs de treino
+          </Link>
+          <Link
+            to="/biblioteca"
+            className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card px-4 py-4 text-center text-sm font-semibold shadow-soft transition hover:border-accent"
+          >
+            <span className="text-2xl">🧰</span> Por material
+          </Link>
+          <Link
+            to="/acervo"
+            className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card px-4 py-4 text-center text-sm font-semibold shadow-soft transition hover:border-accent"
+          >
+            <span className="text-2xl">🎬</span> Acervo +500 vídeos
+          </Link>
+          <Link
+            to="/importar"
+            className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card px-4 py-4 text-center text-sm font-semibold shadow-soft transition hover:border-accent"
+          >
+            <span className="text-2xl">🔗</span> Importar por link
+          </Link>
+        </div>
       </div>
     </main>
   );
