@@ -9,15 +9,20 @@ import {
 } from "@/data/exercises";
 import { PERFIS, buscaNoPerfil } from "@/data/perfis";
 import { BotaoFavorito, ExercicioCard, LinksMidia, useFavoritos } from "@/components/CircuitoView";
+import { useImportados } from "@/lib/importados";
 
 export const Route = createFileRoute("/exercicio/$id")({
   loader: ({ params }) => {
     const exercicio = EXERCICIOS.find((ex) => ex.id === params.id);
-    if (!exercicio) throw notFound();
+    // exercícios importados por link ficam no dispositivo: resolvidos no client
+    if (!exercicio) {
+      if (params.id.startsWith("imp-")) return { exercicio: null };
+      throw notFound();
+    }
     return { exercicio };
   },
   head: ({ loaderData }) => {
-    if (!loaderData) {
+    if (!loaderData?.exercicio) {
       return { meta: [{ title: "Exercício não encontrado" }, { name: "robots", content: "noindex" }] };
     }
     const ex = loaderData.exercicio;
@@ -35,8 +40,20 @@ export const Route = createFileRoute("/exercicio/$id")({
 });
 
 function Detalhe() {
-  const { exercicio: ex } = Route.useLoaderData();
+  const { id } = Route.useParams();
+  const { exercicio: doCatalogo } = Route.useLoaderData();
+  const { lista: importados } = useImportados();
   const { favoritos, alternar } = useFavoritos();
+  const ex = doCatalogo ?? importados.find((i) => i.id === id);
+  if (!ex) {
+    return (
+      <main className="flex min-h-screen items-center justify-center px-4 text-center">
+        <p className="text-sm text-muted-foreground">
+          Carregando exercício importado… se não aparecer, ele não está salvo neste dispositivo.
+        </p>
+      </main>
+    );
+  }
   const equipamento = EQUIPAMENTOS.find((e) => e.id === ex.equipamento);
   const foco = FOCOS.find((f) => f.id === ex.foco);
   const relacionados = EXERCICIOS.filter(

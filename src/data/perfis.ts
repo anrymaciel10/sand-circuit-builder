@@ -72,14 +72,50 @@ export function linkPerfil(p: Perfil) {
   return `https://www.instagram.com/${p.handle}/`;
 }
 
-/** Busca de treinos dentro dos perfis de referência (Google) */
-export function buscaNoPerfil(p: Perfil, termo: string) {
-  const q = `site:instagram.com/${p.handle} ${termo}`.trim();
-  return `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+export type Plataforma = "google" | "instagram" | "youtube" | "tiktok";
+
+export const PLATAFORMAS_BUSCA: { id: Plataforma; nome: string; emoji: string }[] = [
+  { id: "google", nome: "Google", emoji: "🔎" },
+  { id: "instagram", nome: "Instagram", emoji: "📸" },
+  { id: "youtube", nome: "YouTube", emoji: "▶️" },
+  { id: "tiktok", nome: "TikTok", emoji: "🎵" },
+];
+
+/** Todas as tags usadas pelos perfis, para filtrar por assunto */
+export const TAGS_PERFIS = [...new Set(PERFIS.flatMap((p) => p.tags))].sort();
+
+/** Busca de treinos dentro de um perfil, na plataforma escolhida */
+export function buscaNoPerfil(p: Perfil, termo: string, plataforma: Plataforma = "google") {
+  const t = termo.trim();
+  switch (plataforma) {
+    case "instagram":
+      return `https://www.instagram.com/explore/search/keyword/?q=${encodeURIComponent(`${t} ${p.handle}`.trim())}`;
+    case "youtube":
+      return `https://www.youtube.com/results?search_query=${encodeURIComponent(`${p.nome} ${t}`.trim())}`;
+    case "tiktok":
+      return `https://www.tiktok.com/search?q=${encodeURIComponent(`${p.handle} ${t}`.trim())}`;
+    default:
+      return `https://www.google.com/search?q=${encodeURIComponent(`site:instagram.com/${p.handle} ${t}`.trim())}`;
+  }
 }
 
-/** Busca do termo em todos os perfis de referência de uma vez */
+/** Busca do termo em vários perfis de uma vez */
+export function buscaEmPerfis(
+  termo: string,
+  handles: string[] = PERFIS.map((p) => p.handle),
+  plataforma: Plataforma = "google",
+) {
+  const t = termo.trim();
+  const lista = handles.length ? handles : PERFIS.map((p) => p.handle);
+  if (plataforma === "google") {
+    const alvos = lista.map((h) => `site:instagram.com/${h}`).join(" OR ");
+    return `https://www.google.com/search?q=${encodeURIComponent(`(${alvos}) ${t}`.trim())}`;
+  }
+  const primeiro = PERFIS.find((p) => p.handle === lista[0]) ?? PERFIS[0]!;
+  return buscaNoPerfil(primeiro, t, plataforma);
+}
+
+/** Compatibilidade com chamadas antigas */
 export function buscaEmTodosPerfis(termo: string) {
-  const alvos = PERFIS.map((p) => `site:instagram.com/${p.handle}`).join(" OR ");
-  return `https://www.google.com/search?q=${encodeURIComponent(`(${alvos}) ${termo}`.trim())}`;
+  return buscaEmPerfis(termo);
 }

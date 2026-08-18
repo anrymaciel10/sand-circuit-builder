@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { ArrowLeft, Search } from "lucide-react";
 import { EQUIPAMENTOS, EXERCICIOS, type Equipamento } from "@/data/exercises";
 import { ExercicioCard } from "@/components/CircuitoView";
+import { useImportados } from "@/lib/importados";
 
 export const Route = createFileRoute("/exercicios")({
   head: () => ({
@@ -24,19 +25,20 @@ export const Route = createFileRoute("/exercicios")({
 });
 
 function Biblioteca() {
+  const { lista: importados } = useImportados();
   const [filtro, setFiltro] = useState<Equipamento | "todos">("todos");
   const [busca, setBusca] = useState("");
   const [soCombinados, setSoCombinados] = useState(false);
 
   const lista = useMemo(
     () =>
-      EXERCICIOS.filter(
+      [...EXERCICIOS, ...importados].filter(
         (ex) =>
           (filtro === "todos" || ex.equipamento === filtro) &&
           (!soCombinados || ex.composto) &&
           ex.nome.toLowerCase().includes(busca.toLowerCase()),
       ),
-    [filtro, busca, soCombinados],
+    [filtro, busca, soCombinados, importados],
   );
 
   return (
@@ -50,7 +52,7 @@ function Biblioteca() {
         </Link>
         <h1 className="mt-3 text-4xl">Biblioteca de exercícios</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {EXERCICIOS.length} movimentos funcionais pensados para a areia.
+          {EXERCICIOS.length + importados.length} movimentos funcionais pensados para a areia.
         </p>
 
         <div className="mt-4 flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-3 shadow-soft">

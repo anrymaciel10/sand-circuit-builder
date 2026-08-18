@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowLeft, Instagram, Search, ExternalLink } from "lucide-react";
-import { PERFIS, buscaEmTodosPerfis, buscaNoPerfil, linkPerfil } from "@/data/perfis";
+import {
+  PERFIS,
+  PLATAFORMAS_BUSCA,
+  TAGS_PERFIS,
+  buscaEmPerfis,
+  buscaNoPerfil,
+  linkPerfil,
+  type Plataforma,
+} from "@/data/perfis";
 
 export const Route = createFileRoute("/perfis")({
   head: () => ({
@@ -37,16 +45,23 @@ const SUGESTOES = [
 function Perfis() {
   const [termo, setTermo] = useState("");
   const [filtro, setFiltro] = useState("");
+  const [plataforma, setPlataforma] = useState<Plataforma>("google");
+  const [tag, setTag] = useState<string>("todas");
+  const [selecionados, setSelecionados] = useState<string[]>([]);
 
   const lista = useMemo(
     () =>
-      PERFIS.filter((p) =>
-        `${p.nome} ${p.handle} ${p.descricao} ${p.tags.join(" ")}`
-          .toLowerCase()
-          .includes(filtro.toLowerCase()),
+      PERFIS.filter(
+        (p) =>
+          (tag === "todas" || p.tags.includes(tag)) &&
+          `${p.nome} ${p.handle} ${p.descricao} ${p.tags.join(" ")}`
+            .toLowerCase()
+            .includes(filtro.toLowerCase()),
       ),
-    [filtro],
+    [filtro, tag],
   );
+
+  const alvos = selecionados.length ? selecionados : lista.map((p) => p.handle);
 
   return (
     <main className="min-h-screen sand-grain pb-16">
@@ -86,13 +101,31 @@ function Perfis() {
               </button>
             ))}
           </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {PLATAFORMAS_BUSCA.map((pl) => (
+              <button
+                key={pl.id}
+                onClick={() => setPlataforma(pl.id)}
+                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  plataforma === pl.id
+                    ? "border-transparent bg-ocean text-primary-foreground"
+                    : "border-border bg-card hover:border-primary"
+                }`}
+              >
+                {pl.emoji} {pl.nome}
+              </button>
+            ))}
+          </div>
           <a
-            href={buscaEmTodosPerfis(termo)}
+            href={buscaEmPerfis(termo, alvos, plataforma)}
             target="_blank"
             rel="noreferrer"
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-sunset px-6 py-3.5 font-display text-xl text-primary-foreground shadow-lift"
           >
-            <Search className="size-5" /> Buscar em todos os perfis
+            <Search className="size-5" />{" "}
+            {selecionados.length
+              ? `Buscar em ${selecionados.length} perfil${selecionados.length > 1 ? "is" : ""}`
+              : "Buscar em todos os perfis"}
           </a>
         </section>
 
@@ -106,10 +139,44 @@ function Perfis() {
           />
         </div>
 
-        <div className="mt-3 space-y-3">
+        <div className="mt-3 flex gap-2 overflow-x-auto pb-2">
+          {["todas", ...TAGS_PERFIS].map((t) => (
+            <button
+              key={t}
+              onClick={() => setTag(t)}
+              className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold capitalize transition-colors ${
+                tag === t ? "border-transparent bg-sunset text-primary-foreground" : "border-border bg-card hover:border-primary"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-1 space-y-3">
           {lista.map((p) => (
-            <article key={p.handle} className="rounded-2xl border border-border bg-card p-4 shadow-soft">
-              <h2 className="text-xl leading-tight">{p.nome}</h2>
+            <article
+              key={p.handle}
+              className={`rounded-2xl border bg-card p-4 shadow-soft ${
+                selecionados.includes(p.handle) ? "border-primary" : "border-border"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <h2 className="text-xl leading-tight">{p.nome}</h2>
+                <label className="flex shrink-0 items-center gap-1.5 text-[11px] font-semibold text-muted-foreground">
+                  <input
+                    type="checkbox"
+                    checked={selecionados.includes(p.handle)}
+                    onChange={() =>
+                      setSelecionados((s) =>
+                        s.includes(p.handle) ? s.filter((h) => h !== p.handle) : [...s, p.handle],
+                      )
+                    }
+                    className="size-4 accent-[hsl(var(--primary))]"
+                  />
+                  incluir na busca
+                </label>
+              </div>
               <p className="text-sm font-semibold text-accent">@{p.handle}</p>
               <p className="mt-1 text-sm text-muted-foreground">{p.descricao}</p>
               <div className="mt-2 flex flex-wrap gap-1.5">
@@ -132,7 +199,7 @@ function Perfis() {
                   <Instagram className="size-3.5" /> Abrir perfil
                 </a>
                 <a
-                  href={buscaNoPerfil(p, termo)}
+                  href={buscaNoPerfil(p, termo, plataforma)}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs font-semibold hover:border-primary"
