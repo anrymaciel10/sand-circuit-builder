@@ -503,6 +503,168 @@ export const EXERCICIOS: Exercicio[] = [
     "step up com remada halteres",
     ["Glúteos", "Quadríceps", "Dorsais", "Bíceps", "Core"],
     "Trem inferior e puxada de costas no mesmo movimento, economizando tempo de estação."),
+
+  // ===== Ampliação da biblioteca por material =====
+
+  // Peso corporal
+  e("xpc1", "Agachamento sumô na areia", "peso-corporal", "forca", 1, "Pés bem afastados e pontas para fora, desça o quadril entre os calcanhares.", "Joelhos acompanhando a linha dos pés.", "agachamento sumo peso corporal"),
+  e("xpc2", "Agachamento isométrico (cadeirinha)", "peso-corporal", "forca", 1, "Sustente o agachamento a 90° imóvel por tempo.", "Peso nos calcanhares, respiração contínua.", "cadeirinha isometrica agachamento"),
+  e("xpc3", "Elevação de quadril unilateral", "peso-corporal", "forca", 2, "Deitado, uma perna estendida, eleve o quadril com a outra apoiada.", "Aperte o glúteo no topo.", "elevacao de quadril unilateral"),
+  e("xpc4", "Prancha lateral com elevação de quadril", "peso-corporal", "core", 2, "Na prancha lateral, desça e suba o quadril.", "Ombro alinhado ao cotovelo.", "prancha lateral elevacao quadril"),
+  e("xpc5", "Salto lateral bilateral", "peso-corporal", "potencia", 2, "Saltos laterais contínuos de um lado para o outro.", "Aterrisse com joelho semiflexionado.", "salto lateral areia"),
+  e("xpc6", "Corrida com calcanhar no glúteo", "peso-corporal", "cardio", 1, "Anfersen no lugar ou avançando na areia.", "Tronco ereto e cadência alta.", "anfersen corrida calcanhar gluteo"),
+  e("xpc7", "Superman no solo", "peso-corporal", "core", 1, "De bruços, eleve braços e pernas simultaneamente.", "Fortalece a lombar sem impacto.", "exercicio superman lombar"),
+  e("xpc8", "Flexão diamante", "peso-corporal", "forca", 3, "Mãos juntas formando um triângulo sob o peito.", "Cotovelos rentes ao corpo.", "flexao diamante triceps"),
+  e("xpc9", "Agachamento búlgaro no solo", "peso-corporal", "forca", 2, "Pé de trás elevado em duna/step natural da areia.", "Desça controlando o joelho da frente.", "agachamento bulgaro peso corporal"),
+  e("xpc10", "Abdominal bicicleta", "peso-corporal", "core", 1, "Cotovelo em direção ao joelho oposto alternando.", "Movimento lento e controlado.", "abdominal bicicleta"),
+
+  // Cones
+  e("xco1", "Corrida em quadrado com cones", "cones", "agilidade", 1, "Percurso quadrado: frente, lateral, ré e lateral.", "Sem cruzar os pés nas laterais.", "drill quadrado cones agilidade"),
+  e("xco2", "Toque nos cones em leque", "cones", "agilidade", 2, "Do centro, corra e toque cada cone dispostos em leque.", "Volte sempre ao ponto central.", "drill leque cones"),
+  e("xco3", "Slalom com bola nos cones", "cones", "agilidade", 2, "Conduza a bola em ziguezague entre os cones.", "Toques curtos e cabeça erguida.", "slalom com bola cones"),
+  e("xco4", "Sprint e volta de costas", "cones", "cardio", 2, "Sprint até o cone e retorno correndo de ré.", "Olhe por cima do ombro na volta.", "corrida de re cone"),
+  e("xco5", "Pique-cone em dupla", "cones", "agilidade", 2, "Dois alunos disputam o cone chamado pelo professor.", "Ótimo para reação e competitividade.", "jogo de reacao cones dupla"),
+  e("xco6", "Deslocamento lateral entre cones", "cones", "agilidade", 1, "Vai e volta lateral tocando o cone com a mão.", "Quadril baixo o tempo todo.", "deslocamento lateral cones"),
+  e("xco7", "Corrida em L", "cones", "agilidade", 2, "Sprint frontal, curva de 90° e novo sprint.", "Plante o pé externo para virar.", "l drill agilidade cones"),
+  e("xco8", "Skipping alto entre cones", "cones", "cardio", 1, "Joelhos altos passando entre cones próximos.", "Pisada rápida na areia.", "skipping entre cones"),
+
+  // Escada de agilidade
+  e("xea1", "Escada: Icky shuffle", "escada-agilidade", "agilidade", 3, "Dentro-dentro-fora alternando o lado a cada casa.", "Comece devagar até acertar o padrão.", "icky shuffle escada agilidade"),
+  e("xea2", "Escada: tesoura", "escada-agilidade", "agilidade", 2, "Alterne os pés em movimento de tesoura casa a casa.", "Contato curto no chão.", "escada agilidade tesoura"),
+  e("xea3", "Escada: hop unipodal", "escada-agilidade", "potencia", 3, "Saltos casa a casa em uma perna só.", "Aterrisse macio na areia.", "escada agilidade salto uma perna"),
+  e("xea4", "Escada: entrada e saída lateral", "escada-agilidade", "agilidade", 2, "Entra com dois pés e sai lateralmente a cada casa.", "Mantenha o ritmo constante.", "escada agilidade entra e sai"),
+  e("xea5", "Escada: corrida de costas", "escada-agilidade", "agilidade", 3, "Percurso na escada correndo para trás.", "Passos curtos, olhar sobre o ombro.", "escada agilidade de costas"),
+  e("xea6", "Escada: agachamento a cada 2 casas", "escada-agilidade", "cardio", 2, "Avance na escada e agache a cada duas casas.", "Combina agilidade e força.", "escada agilidade com agachamento"),
+
+  // Mini band
+  e("xmb1", "Agachamento com mini band", "miniband", "forca", 1, "Band acima dos joelhos, agachamento empurrando para fora.", "Não deixe o joelho colapsar.", "agachamento com mini band"),
+  e("xmb2", "Ponte de glúteo com abdução", "miniband", "forca", 2, "No topo da ponte, abra os joelhos contra a band.", "Segure 1s na abertura.", "ponte de gluteo com mini band"),
+  e("xmb3", "Salto lateral com mini band", "miniband", "potencia", 3, "Saltos laterais mantendo tensão na band.", "Aterrissagem controlada.", "salto lateral mini band"),
+  e("xmb4", "Abdução de quadril em pé", "miniband", "forca", 1, "Band nos tornozelos, abra a perna lateralmente.", "Tronco firme, sem inclinar.", "abducao de quadril mini band"),
+  e("xmb5", "Prancha com passos laterais", "miniband", "core", 2, "Em prancha alta, dê passos laterais contra a band.", "Quadril sem balançar.", "prancha com mini band nos pes"),
+  e("xmb6", "Clamshell (concha)", "miniband", "forca", 1, "Deitado de lado, abra o joelho contra a resistência.", "Ativa glúteo médio antes do treino.", "clamshell mini band"),
+
+  // Elástico
+  e("xel1", "Puxada alta com elástico", "elastico", "forca", 1, "Puxe o elástico até a altura do queixo com cotovelos altos.", "Escápulas ativas.", "remada alta com elastico"),
+  e("xel2", "Agachamento com elástico", "elastico", "forca", 1, "Pise no elástico e agache segurando as pontas nos ombros.", "Tensão constante.", "agachamento com elastico"),
+  e("xel3", "Face pull com elástico", "elastico", "forca", 2, "Puxe em direção ao rosto abrindo os cotovelos.", "Excelente para postura.", "face pull elastico"),
+  e("xel4", "Corrida estacionária resistida", "elastico", "cardio", 2, "Parceiro segura o elástico; corra no lugar contra a tensão.", "Alta frequência de passada.", "corrida resistida elastico"),
+  e("xel5", "Bíceps com elástico", "elastico", "forca", 1, "Pise na faixa e flexione os cotovelos.", "Controle a volta.", "biceps com elastico"),
+  e("xel6", "Woodchop (lenhador) com elástico", "elastico", "core", 2, "Puxada diagonal de baixo para cima girando o tronco.", "Gire pelo quadril.", "woodchop elastico"),
+
+  // Bola medicinal
+  e("xbm1", "Arremesso lateral na parede/parceiro", "bola-medicinal", "potencia", 2, "Gire o tronco e arremesse a bola lateralmente.", "Pivote o pé de trás.", "arremesso lateral bola medicinal"),
+  e("xbm2", "Abdominal com passe da bola", "bola-medicinal", "core", 1, "Sit-up e passe a bola ao parceiro no topo.", "Ritmo contínuo em dupla.", "sit up com bola medicinal"),
+  e("xbm3", "Afundo com rotação de tronco", "bola-medicinal", "core", 2, "No afundo, gire o tronco com a bola para o lado da perna da frente.", "Rotação lenta.", "afundo com rotacao bola medicinal"),
+  e("xbm4", "Prancha com mão sobre a bola", "bola-medicinal", "core", 2, "Prancha alta alternando a mão sobre a bola.", "Quadril estável.", "prancha com bola medicinal"),
+  e("xbm5", "Deadlift com bola medicinal", "bola-medicinal", "forca", 1, "Dobradiça de quadril levantando a bola do chão.", "Coluna neutra.", "levantamento terra bola medicinal"),
+  e("xbm6", "Corrida carregando a bola", "bola-medicinal", "cardio", 2, "Corrida de 20 a 30 m segurando a bola no peito.", "Cotovelos junto ao corpo.", "corrida com bola medicinal"),
+
+  // Slam ball
+  e("xsb1", "Slam ball lateral", "slam-ball", "potencia", 2, "Arremesso ao solo do lado do corpo, alternando lados.", "Gire o tronco no arremesso.", "slam ball lateral"),
+  e("xsb2", "Slam ball com agachamento", "slam-ball", "potencia", 2, "Agache para pegar a bola e arremesse acima da cabeça.", "Use o quadril.", "slam ball com agachamento"),
+  e("xsb3", "Slam ball caminhando", "slam-ball", "cardio", 3, "Arremessa, avança até a bola e repete por 20 m.", "Estação de deslocamento.", "slam ball caminhando"),
+  e("xsb4", "Slam ball em dupla alternada", "slam-ball", "cardio", 2, "Um arremessa, o outro recolhe e repete.", "Mantenha o ritmo alto.", "slam ball dupla"),
+  e("xsb5", "Russian twist com slam ball", "slam-ball", "core", 2, "Rotação de tronco sentado com a slam ball.", "Pés suspensos para dificultar.", "russian twist slam ball"),
+
+  // Corda naval
+  e("xcn1", "Ondas laterais (side to side)", "corda-naval", "cardio", 2, "Balance as duas pontas para os lados juntas.", "Trabalhe oblíquos.", "battle rope side to side"),
+  e("xcn2", "Corda naval com afundo alternado", "corda-naval", "cardio", 3, "Ondas alternadas enquanto alterna afundos.", "Coordenação alta.", "battle rope com afundo"),
+  e("xcn3", "Corda naval ajoelhado", "corda-naval", "forca", 2, "Ondas alternadas de joelhos na areia.", "Isola braços e core.", "battle rope ajoelhado"),
+  e("xcn4", "Corda naval em jumping jack", "corda-naval", "cardio", 3, "Abre e fecha os braços com a corda saltando.", "Alta demanda cardiorrespiratória.", "battle rope jumping jack"),
+  e("xcn5", "Puxada da corda naval (rope pull)", "corda-naval", "forca", 2, "Puxe a corda estendida com peso na ponta até você.", "Costas e antebraços.", "rope pull corda naval"),
+
+  // Kettlebell
+  e("xkb1", "Kettlebell deadlift", "kettlebell", "forca", 1, "Dobradiça de quadril levantando o kettlebell entre os pés.", "Coluna neutra.", "kettlebell deadlift"),
+  e("xkb2", "Turkish get-up parcial", "kettlebell", "equilibrio", 3, "Do solo até sentado com o kettlebell acima.", "Braço sempre travado.", "turkish get up kettlebell"),
+  e("xkb3", "Halo com kettlebell", "kettlebell", "core", 1, "Circule o kettlebell ao redor da cabeça.", "Mobiliza ombros.", "halo kettlebell"),
+  e("xkb4", "Remada unilateral com kettlebell", "kettlebell", "forca", 2, "Tronco inclinado, puxada até a costela.", "Sem girar o tronco.", "remada unilateral kettlebell"),
+  e("xkb5", "Snatch com kettlebell", "kettlebell", "potencia", 3, "Do chão até acima da cabeça em um movimento.", "Exige técnica; use carga leve.", "kettlebell snatch"),
+  e("xkb6", "Agachamento frontal com 2 kettlebells", "kettlebell", "forca", 3, "Kettlebells em rack no ombro, agachamento profundo.", "Cotovelos altos.", "front squat kettlebell"),
+
+  // Halteres
+  e("xha1", "Elevação lateral", "halteres", "forca", 1, "Eleve os halteres até a linha dos ombros.", "Cotovelos levemente flexionados.", "elevacao lateral halteres"),
+  e("xha2", "Rosca bíceps alternada", "halteres", "forca", 1, "Flexione um cotovelo por vez.", "Sem balançar o tronco.", "rosca alternada halteres"),
+  e("xha3", "Renegade row", "halteres", "core", 3, "Em prancha sobre os halteres, reme alternando.", "Quadril imóvel.", "renegade row halteres"),
+  e("xha4", "Swing com halter", "halteres", "potencia", 2, "Balanço explosivo do quadril com um halter.", "Movimento de dobradiça.", "swing com halter"),
+  e("xha5", "Agachamento goblet com halter", "halteres", "forca", 1, "Segure o halter no peito e agache.", "Desça controlado.", "goblet squat halter"),
+  e("xha6", "Farmer walk com halteres", "halteres", "forca", 1, "Caminhada carregada de 20 a 30 m na areia.", "Ombros para trás.", "farmer walk halteres"),
+
+  // TRX
+  e("xtr1", "Agachamento assistido no TRX", "trx", "forca", 1, "Segure as alças e agache profundo com apoio.", "Ideal para iniciantes.", "agachamento assistido trx"),
+  e("xtr2", "Remada baixa unilateral no TRX", "trx", "forca", 2, "Puxada com um braço só.", "Evite girar o tronco.", "remada unilateral trx"),
+  e("xtr3", "Curl de isquiotibiais no TRX", "trx", "forca", 3, "Deitado, pés nas alças, flexione os joelhos elevando o quadril.", "Quadril sempre alto.", "hamstring curl trx"),
+  e("xtr4", "Prancha com pés no TRX", "trx", "core", 2, "Prancha com pés suspensos nas alças.", "Core firme, sem afundar.", "prancha com pes no trx"),
+  e("xtr5", "Mountain climber no TRX", "trx", "cardio", 3, "Pés suspensos, joelhos alternados rápido.", "Ritmo constante.", "mountain climber trx"),
+  e("xtr6", "Sprinter start no TRX", "trx", "potencia", 2, "Inclinado à frente, simule arrancada de corrida.", "Empurre com a perna de trás.", "sprinter start trx"),
+
+  // Bosu
+  e("xbo1", "Agachamento sobre o Bosu", "bosu", "equilibrio", 2, "Agache em cima da cúpula do Bosu.", "Pés afastados para estabilizar.", "agachamento em cima do bosu"),
+  e("xbo2", "Prancha com antebraços no Bosu", "bosu", "core", 2, "Prancha apoiando os cotovelos na cúpula.", "Segure a oscilação.", "prancha no bosu"),
+  e("xbo3", "Salto sobre o Bosu", "bosu", "potencia", 3, "Salto com dois pés sobre a cúpula e aterrissagem estável.", "Segure 1s na aterrissagem.", "salto no bosu"),
+  e("xbo4", "Ponte de glúteo com pés no Bosu", "bosu", "forca", 1, "Calcanhares na cúpula, eleve o quadril.", "Aperte o glúteo no topo.", "ponte de gluteo bosu"),
+  e("xbo5", "Prancha lateral no Bosu", "bosu", "core", 3, "Cotovelo apoiado na cúpula sustentando a lateral.", "Quadril alinhado.", "prancha lateral bosu"),
+  e("xbo6", "Passada sobre o Bosu", "bosu", "equilibrio", 2, "Suba e desça atravessando o Bosu em passadas.", "Controle o apoio instável.", "passada sobre bosu"),
+
+  // Step / caixote
+  e("xst1", "Box jump no caixote", "step", "potencia", 3, "Salto com dois pés sobre o caixote.", "Desça sempre em passo.", "box jump caixote"),
+  e("xst2", "Step up com joelho alto", "step", "cardio", 1, "Suba e eleve o joelho oposto no topo.", "Ritmo contínuo.", "step up com joelho alto"),
+  e("xst3", "Flexão declinada no step", "step", "forca", 3, "Pés no caixote, mãos na areia.", "Aumenta a carga nos ombros.", "flexao declinada step"),
+  e("xst4", "Elevação de panturrilha no step", "step", "forca", 1, "Calcanhares para fora da borda, suba e desça.", "Amplitude completa.", "elevacao de panturrilha no step"),
+  e("xst5", "Subida rápida alternada (fast feet)", "step", "cardio", 2, "Troca rápida dos pés no topo do step.", "Cadência máxima por 20s.", "fast feet step"),
+  e("xst6", "Prancha com pés no step", "step", "core", 2, "Prancha com os pés elevados no caixote.", "Quadril baixo.", "prancha com pes elevados step"),
+
+  // Corda de pular
+  e("xcp1", "Pulos alternados (corrida na corda)", "corda-de-pular", "cardio", 1, "Alterne os pés como se corresse pulando corda.", "Pisada leve.", "corda de pular alternado"),
+  e("xcp2", "Double under", "corda-de-pular", "cardio", 3, "Duas voltas da corda por salto.", "Salto mais alto e punhos rápidos.", "double under corda"),
+  e("xcp3", "Pulo cruzado", "corda-de-pular", "agilidade", 2, "Cruze os braços a cada salto.", "Ritmo constante.", "corda de pular cruzado"),
+  e("xcp4", "Pulo unipodal", "corda-de-pular", "potencia", 2, "Saltos em uma perna só, alternando a cada 10.", "Fortalece tornozelo.", "corda de pular uma perna"),
+  e("xcp5", "Esqui lateral com corda", "corda-de-pular", "cardio", 2, "Saltos laterais pequenos a cada volta da corda.", "Pés juntos.", "corda de pular esqui lateral"),
+
+  // Bastão
+  e("xba1", "Mobilidade de ombros com bastão", "bastao", "equilibrio", 1, "Passe o bastão da frente para trás com braços estendidos.", "Ótimo no aquecimento.", "mobilidade de ombro com bastao"),
+  e("xba2", "Bom dia com bastão", "bastao", "forca", 1, "Bastão nas costas, dobradiça de quadril.", "Coluna neutra.", "bom dia com bastao"),
+  e("xba3", "Agachamento overhead com bastão", "bastao", "equilibrio", 2, "Agachamento com bastão acima da cabeça.", "Braços sempre atrás da linha da orelha.", "overhead squat com bastao"),
+  e("xba4", "Rotação de tronco com bastão", "bastao", "core", 1, "Bastão nos ombros, gire o tronco de um lado ao outro.", "Quadril fixo.", "rotacao de tronco com bastao"),
+  e("xba5", "Reação: derrubar o bastão", "bastao", "agilidade", 2, "Parceiro solta o bastão e o aluno pega antes de cair.", "Excelente para tempo de reação.", "exercicio reacao bastao"),
+
+  // Paraquedas
+  e("xpq1", "Sprint com paraquedas 30 m", "paraquedas", "cardio", 2, "Arranque máximo com o paraquedas aberto.", "Inclinação de tronco nos primeiros passos.", "sprint com paraquedas"),
+  e("xpq2", "Corrida lateral com paraquedas", "paraquedas", "agilidade", 3, "Deslocamento lateral resistido.", "Quadril baixo.", "corrida lateral com paraquedas"),
+  e("xpq3", "Skipping alto resistido", "paraquedas", "potencia", 2, "Joelhos altos avançando com o paraquedas.", "Cadência alta.", "skipping resistido paraquedas"),
+  e("xpq4", "Tiro com soltura do paraquedas", "paraquedas", "potencia", 3, "Solte o paraquedas no meio do tiro e acelere.", "Sensação de sobrevelocidade.", "sprint soltura paraquedas"),
+  e("xpq5", "Corrida contínua resistida", "paraquedas", "cardio", 2, "Trote de 60 a 100 m com resistência.", "Mantenha a técnica de corrida.", "corrida resistida paraquedas"),
+
+  // Aros
+  e("xar1", "Corrida dentro dos aros", "aros", "agilidade", 1, "Um apoio por aro em sequência.", "Olhar à frente.", "corrida nos aros agilidade"),
+  e("xar2", "Saltos com dois pés nos aros", "aros", "potencia", 2, "Salto de aro em aro com pés juntos.", "Contato curto no solo.", "saltos nos aros"),
+  e("xar3", "Saltos unipodais nos aros", "aros", "potencia", 3, "Percorra os aros em uma perna só.", "Aterrisse estável.", "salto unipodal aros"),
+  e("xar4", "Aros em ziguezague", "aros", "agilidade", 2, "Aros dispostos em diagonal, salto alternando lados.", "Trabalhe a mudança de direção.", "aros ziguezague treino"),
+  e("xar5", "Aros com apoio de mãos (bear)", "aros", "core", 2, "Avance em bear crawl apoiando as mãos nos aros.", "Joelhos suspensos.", "bear crawl com aros"),
+
+  // Pneu
+  e("xpn1", "Virada de pneu (tire flip)", "pneu", "potencia", 3, "Levante e vire o pneu usando as pernas.", "Peito colado no pneu ao levantar.", "tire flip pneu"),
+  e("xpn2", "Marreta no pneu", "pneu", "potencia", 2, "Golpes alternados com marreta sobre o pneu.", "Alterne o lado a cada 10 golpes.", "marreta no pneu treino"),
+  e("xpn3", "Salto para dentro do pneu", "pneu", "potencia", 2, "Salto para dentro e para fora do pneu.", "Aterrissagem macia.", "salto no pneu"),
+  e("xpn4", "Flexão com mãos no pneu", "pneu", "forca", 1, "Apoio elevado nas bordas do pneu.", "Boa progressão de flexão.", "flexao com apoio no pneu"),
+  e("xpn5", "Arrasto de pneu", "pneu", "forca", 3, "Pneu preso por corda, arraste 20 m na areia.", "Passos curtos e potentes.", "arrasto de pneu na areia"),
+  e("xpn6", "Step up no pneu", "pneu", "forca", 1, "Subidas alternadas sobre a borda do pneu.", "Empurre com o calcanhar.", "step up no pneu"),
+
+  // Colchonete
+  e("xcl1", "Abdominal remador", "colchonete", "core", 2, "Estenda e recolha braços e pernas simultaneamente.", "Lombar apoiada.", "abdominal remador"),
+  e("xcl2", "Prancha com toque no ombro", "colchonete", "core", 2, "Em prancha alta, toque o ombro oposto alternando.", "Quadril sem girar.", "prancha toque no ombro"),
+  e("xcl3", "Dead bug", "colchonete", "core", 1, "Braço e perna opostos descendo com lombar apoiada.", "Movimento lento.", "dead bug exercicio"),
+  e("xcl4", "Bird dog", "colchonete", "equilibrio", 1, "Em quatro apoios, estenda braço e perna opostos.", "Segure 2s no topo.", "bird dog exercicio"),
+  e("xcl5", "Alongamento de cadeia posterior", "colchonete", "equilibrio", 1, "Sentado, alcance os pés mantendo a coluna longa.", "Ideal para volta à calma.", "alongamento cadeia posterior"),
+  e("xcl6", "Abdominal canivete", "colchonete", "core", 3, "Suba tronco e pernas ao mesmo tempo formando um V.", "Controle a descida.", "abdominal canivete"),
+
+  // Bola
+  e("xbl1", "Toques de bola no ar (embaixadinha)", "bola", "equilibrio", 2, "Sequência de toques sem deixar a bola cair.", "Ótimo aquecimento lúdico.", "embaixadinha treino funcional"),
+  e("xbl2", "Passe e sprint em dupla", "bola", "cardio", 2, "Passe a bola e corra para receber de volta.", "Ritmo contínuo por 40s.", "passe e sprint com bola"),
+  e("xbl3", "Agachamento com passe de bola", "bola", "forca", 1, "Agache e no topo passe a bola ao parceiro.", "Estação em dupla.", "agachamento com passe de bola"),
+  e("xbl4", "Domínio no peito com deslocamento", "bola", "agilidade", 2, "Domine a bola e desloque-se lateralmente.", "Aplicação direta no futevôlei.", "dominio de bola areia"),
+  e("xbl5", "Prancha com rolamento de bola", "bola", "core", 2, "Em prancha, role a bola de uma mão para a outra.", "Quadril estável.", "prancha com bola rolando"),
+  e("xbl6", "Salto e cabeceio", "bola", "potencia", 2, "Salto vertical para cabecear a bola lançada pelo parceiro.", "Aterrisse macio na areia.", "salto e cabeceio treino"),
 ];
 
 // ---- músculos e objetivo (explícito quando existe, inferido pelo padrão de movimento) ----
