@@ -17,7 +17,11 @@ import {
   ChevronRight,
   Check,
   Target,
+  Play,
+  Replace,
 } from "lucide-react";
+import { TrocarExercicio } from "@/components/TrocarExercicio";
+
 import {
   beneficioDoExercicio,
   linkGif,
