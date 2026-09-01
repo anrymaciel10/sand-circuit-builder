@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AcervoRouteImport } from './routes/acervo'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
+import { Route as ExecutarRouteImport } from './routes/executar'
 import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as ImportarRouteImport } from './routes/importar'
 import { Route as PacksRouteImport } from './routes/packs'
@@ -33,6 +34,11 @@ const AcervoRoute = AcervoRouteImport.update({
 const BibliotecaRoute = BibliotecaRouteImport.update({
   id: '/biblioteca',
   path: '/biblioteca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExecutarRoute = ExecutarRouteImport.update({
+  id: '/executar',
+  path: '/executar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExerciciosRoute = ExerciciosRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/acervo': typeof AcervoRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/executar': typeof ExecutarRoute
   '/exercicios': typeof ExerciciosRoute
   '/importar': typeof ImportarRoute
   '/packs': typeof PacksRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/acervo': typeof AcervoRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/executar': typeof ExecutarRoute
   '/exercicios': typeof ExerciciosRoute
   '/importar': typeof ImportarRoute
   '/packs': typeof PacksRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/acervo': typeof AcervoRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/executar': typeof ExecutarRoute
   '/exercicios': typeof ExerciciosRoute
   '/importar': typeof ImportarRoute
   '/packs': typeof PacksRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/acervo'
     | '/biblioteca'
+    | '/executar'
     | '/exercicios'
     | '/importar'
     | '/packs'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/acervo'
     | '/biblioteca'
+    | '/executar'
     | '/exercicios'
     | '/importar'
     | '/packs'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/acervo'
     | '/biblioteca'
+    | '/executar'
     | '/exercicios'
     | '/importar'
     | '/packs'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AcervoRoute: typeof AcervoRoute
   BibliotecaRoute: typeof BibliotecaRoute
+  ExecutarRoute: typeof ExecutarRoute
   ExerciciosRoute: typeof ExerciciosRoute
   ImportarRoute: typeof ImportarRoute
   PacksRoute: typeof PacksRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/biblioteca'
       fullPath: '/biblioteca'
       preLoaderRoute: typeof BibliotecaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/executar': {
+      id: '/executar'
+      path: '/executar'
+      fullPath: '/executar'
+      preLoaderRoute: typeof ExecutarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercicios': {
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AcervoRoute: AcervoRoute,
   BibliotecaRoute: BibliotecaRoute,
+  ExecutarRoute: ExecutarRoute,
   ExerciciosRoute: ExerciciosRoute,
   ImportarRoute: ImportarRoute,
   PacksRoute: PacksRoute,

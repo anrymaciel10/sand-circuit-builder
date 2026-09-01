@@ -17,7 +17,11 @@ import {
   ChevronRight,
   Check,
   Target,
+  Play,
+  Replace,
 } from "lucide-react";
+import { TrocarExercicio } from "@/components/TrocarExercicio";
+
 import {
   beneficioDoExercicio,
   linkGif,
@@ -192,11 +196,20 @@ function AcaoBotao({
 export function CircuitoView({
   circuito,
   onRegenerar,
+  editavel = true,
 }: {
   circuito: Circuito;
   onRegenerar?: () => void;
+  editavel?: boolean;
 }) {
-  const preset = PRESETS[circuito.config.formato];
+  const [atual, setAtual] = useState<Circuito>(circuito);
+  const [trocando, setTrocando] = useState<number | null>(null);
+  useEffect(() => {
+    setAtual(circuito);
+    setTrocando(null);
+  }, [circuito]);
+
+  const preset = PRESETS[atual.config.formato];
   const { favoritos, alternar } = useFavoritos();
   const [aviso, setAviso] = useState("");
   const [nome, setNome] = useState(circuito.nome ?? "");
@@ -207,9 +220,18 @@ export function CircuitoView({
     window.setTimeout(() => setAviso(""), 2500);
   };
 
+  const trocarEstacao = (ordem: number, ex: Exercicio) => {
+    setAtual((c) => ({
+      ...c,
+      estacoes: c.estacoes.map((e) => (e.ordem === ordem ? { ...e, exercicio: ex } : e)),
+    }));
+    setTrocando(null);
+    flash("Estação atualizada.");
+  };
+
   const copiar = async () => {
     try {
-      await navigator.clipboard.writeText(textoCompartilhar(circuito));
+      await navigator.clipboard.writeText(textoCompartilhar(atual));
       flash("Treino copiado para a área de transferência.");
     } catch {
       flash("Não foi possível copiar neste navegador.");
@@ -217,7 +239,7 @@ export function CircuitoView({
   };
 
   const compartilhar = async () => {
-    const url = `${window.location.origin}/treino?d=${serializarCircuito(circuito)}`;
+    const url = `${window.location.origin}/treino?d=${serializarCircuito(atual)}`;
     try {
       if (navigator.share) {
         await navigator.share({ title: "Circuito Life Training", url });
@@ -231,7 +253,7 @@ export function CircuitoView({
   };
 
   const confirmarSalvar = () => {
-    salvarTreino(circuito, nome || `Circuito ${preset.nome}`);
+    salvarTreino(atual, nome || `Circuito ${preset.nome}`);
     setSalvando(false);
     flash("Treino salvo na sua biblioteca.");
   };
@@ -240,15 +262,15 @@ export function CircuitoView({
     <section className="space-y-4">
       <div className="rounded-3xl bg-ocean p-5 text-primary-foreground shadow-lift">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] opacity-80">
-          {circuito.nome ? "Treino salvo" : "Seu circuito"}
+          {atual.nome ? "Treino salvo" : "Seu circuito"}
         </p>
-        <h2 className="mt-1 text-3xl">{circuito.nome || `${preset.nome} na areia`}</h2>
+        <h2 className="mt-1 text-3xl">{atual.nome || `${preset.nome} na areia`}</h2>
         <p className="mt-1 text-sm opacity-90">{preset.descricao}</p>
         <div className="mt-4 grid grid-cols-3 gap-2 text-center">
           {[
-            { label: "Estações", valor: String(circuito.estacoes.length) },
-            { label: "Rodadas", valor: String(circuito.config.rodadas) },
-            { label: "Duração", valor: `${circuito.duracaoMin}′` },
+            { label: "Estações", valor: String(atual.estacoes.length) },
+            { label: "Rodadas", valor: String(atual.config.rodadas) },
+            { label: "Duração", valor: `${atual.duracaoMin}′` },
           ].map((i) => (
             <div key={i.label} className="rounded-2xl bg-white/15 px-2 py-3 backdrop-blur">
               <p className="font-display text-2xl leading-none">{i.valor}</p>
@@ -259,15 +281,23 @@ export function CircuitoView({
         <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm opacity-90">
           <span className="flex items-center gap-1.5">
             <Clock className="size-4" />
-            {circuito.config.trabalho}s / {circuito.config.descanso}s
+            {atual.config.trabalho}s / {atual.config.descanso}s
           </span>
           <span className="flex items-center gap-1.5 capitalize">
             <Users className="size-4" />
-            {circuito.config.modalidade}
+            {atual.config.modalidade}
           </span>
         </p>
 
-        <div className="mt-4 grid grid-cols-2 gap-2">
+        <Link
+          to="/executar"
+          search={{ d: serializarCircuito(atual) }}
+          className="mt-4 flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 font-display text-2xl text-accent shadow-lift"
+        >
+          <Play className="size-5 fill-current" /> Iniciar treino real
+        </Link>
+
+        <div className="mt-3 grid grid-cols-2 gap-2">
           {onRegenerar && (
             <AcaoBotao onClick={onRegenerar}>
               <RefreshCw className="size-4" /> Novo sorteio
@@ -282,9 +312,7 @@ export function CircuitoView({
           <AcaoBotao onClick={compartilhar}>
             <Share2 className="size-4" /> Compartilhar
           </AcaoBotao>
-          <AcaoBotao
-            onClick={() => exportarPDF(circuito, circuito.nome || `Circuito ${preset.nome}`)}
-          >
+          <AcaoBotao onClick={() => exportarPDF(atual, atual.nome || `Circuito ${preset.nome}`)}>
             <FileDown className="size-4" /> PDF
           </AcaoBotao>
         </div>
@@ -308,11 +336,11 @@ export function CircuitoView({
         {aviso && <p className="mt-3 text-sm font-semibold text-sun">{aviso}</p>}
       </div>
 
-      {circuito.aquecimento.length > 0 && (
+      {atual.aquecimento.length > 0 && (
         <div className="rounded-2xl border border-dashed border-border bg-card/70 p-4">
           <h3 className="text-lg">Aquecimento · 5 min</h3>
           <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-            {circuito.aquecimento.map((ex) => (
+            {atual.aquecimento.map((ex) => (
               <li key={ex.id}>• {ex.nome}</li>
             ))}
           </ul>
@@ -320,15 +348,34 @@ export function CircuitoView({
       )}
 
       <div className="space-y-3">
-        {circuito.estacoes.map((est) => (
-          <ExercicioCard
-            key={est.exercicio.id}
-            ex={est.exercicio}
-            ordem={est.ordem}
-            dinamica={dinamicaDaEstacao(circuito.config.modalidade, est.exercicio.nome)}
-            favorito={favoritos.includes(est.exercicio.id)}
-            onFavoritar={() => alternar(est.exercicio.id)}
-          />
+        {atual.estacoes.map((est) => (
+          <div key={`${est.ordem}-${est.exercicio.id}`}>
+            <ExercicioCard
+              ex={est.exercicio}
+              ordem={est.ordem}
+              dinamica={dinamicaDaEstacao(atual.config.modalidade, est.exercicio.nome)}
+              favorito={favoritos.includes(est.exercicio.id)}
+              onFavoritar={() => alternar(est.exercicio.id)}
+            />
+            {editavel && (
+              <>
+                <button
+                  onClick={() => setTrocando((v) => (v === est.ordem ? null : est.ordem))}
+                  className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2 text-sm font-semibold text-muted-foreground transition hover:border-primary hover:text-primary"
+                >
+                  <Replace className="size-4" /> Trocar exercício da estação {est.ordem}
+                </button>
+                {trocando === est.ordem && (
+                  <TrocarExercicio
+                    atual={est.exercicio}
+                    usados={atual.estacoes.map((e) => e.exercicio.id)}
+                    onEscolher={(ex) => trocarEstacao(est.ordem, ex)}
+                    onFechar={() => setTrocando(null)}
+                  />
+                )}
+              </>
+            )}
+          </div>
         ))}
       </div>
 
@@ -340,3 +387,4 @@ export function CircuitoView({
     </section>
   );
 }
+
