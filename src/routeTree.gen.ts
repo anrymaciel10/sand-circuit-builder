@@ -15,6 +15,7 @@ import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as ExecutarRouteImport } from './routes/executar'
 import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as ImportarRouteImport } from './routes/importar'
+import { Route as ImportarTreinosRouteImport } from './routes/importar-treinos'
 import { Route as PacksRouteImport } from './routes/packs'
 import { Route as PerfisRouteImport } from './routes/perfis'
 import { Route as TreinoRouteImport } from './routes/treino'
@@ -51,6 +52,11 @@ const ImportarRoute = ImportarRouteImport.update({
   path: '/importar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImportarTreinosRoute = ImportarTreinosRouteImport.update({
+  id: '/importar-treinos',
+  path: '/importar-treinos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PacksRoute = PacksRouteImport.update({
   id: '/packs',
   path: '/packs',
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/executar': typeof ExecutarRoute
   '/exercicios': typeof ExerciciosRoute
   '/importar': typeof ImportarRoute
+  '/importar-treinos': typeof ImportarTreinosRoute
   '/packs': typeof PacksRoute
   '/perfis': typeof PerfisRoute
   '/treino': typeof TreinoRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/executar': typeof ExecutarRoute
   '/exercicios': typeof ExerciciosRoute
   '/importar': typeof ImportarRoute
+  '/importar-treinos': typeof ImportarTreinosRoute
   '/packs': typeof PacksRoute
   '/perfis': typeof PerfisRoute
   '/treino': typeof TreinoRoute
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/executar': typeof ExecutarRoute
   '/exercicios': typeof ExerciciosRoute
   '/importar': typeof ImportarRoute
+  '/importar-treinos': typeof ImportarTreinosRoute
   '/packs': typeof PacksRoute
   '/perfis': typeof PerfisRoute
   '/treino': typeof TreinoRoute
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/executar'
     | '/exercicios'
     | '/importar'
+    | '/importar-treinos'
     | '/packs'
     | '/perfis'
     | '/treino'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/executar'
     | '/exercicios'
     | '/importar'
+    | '/importar-treinos'
     | '/packs'
     | '/perfis'
     | '/treino'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/executar'
     | '/exercicios'
     | '/importar'
+    | '/importar-treinos'
     | '/packs'
     | '/perfis'
     | '/treino'
@@ -166,6 +178,7 @@ export interface RootRouteChildren {
   ExecutarRoute: typeof ExecutarRoute
   ExerciciosRoute: typeof ExerciciosRoute
   ImportarRoute: typeof ImportarRoute
+  ImportarTreinosRoute: typeof ImportarTreinosRoute
   PacksRoute: typeof PacksRoute
   PerfisRoute: typeof PerfisRoute
   TreinoRoute: typeof TreinoRoute
@@ -217,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImportarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/importar-treinos': {
+      id: '/importar-treinos'
+      path: '/importar-treinos'
+      fullPath: '/importar-treinos'
+      preLoaderRoute: typeof ImportarTreinosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/packs': {
       id: '/packs'
       path: '/packs'
@@ -262,6 +282,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExecutarRoute: ExecutarRoute,
   ExerciciosRoute: ExerciciosRoute,
   ImportarRoute: ImportarRoute,
+  ImportarTreinosRoute: ImportarTreinosRoute,
   PacksRoute: PacksRoute,
   PerfisRoute: PerfisRoute,
   TreinoRoute: TreinoRoute,
