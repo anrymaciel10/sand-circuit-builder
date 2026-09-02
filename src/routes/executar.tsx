@@ -35,7 +35,7 @@ type Fase = {
   rodada: number;
   estacao: number;
   exercicio?: Exercicio;
-  proximo?: string;
+  proximo?: string | undefined;
 };
 
 function mmss(s: number) {

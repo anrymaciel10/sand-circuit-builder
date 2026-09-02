@@ -321,7 +321,21 @@ function Home() {
           >
             <span className="text-2xl">🔗</span> Importar por link
           </Link>
+          <Link
+            to="/importar-treinos"
+            className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card px-4 py-4 text-center text-sm font-semibold shadow-soft transition hover:border-accent"
+          >
+            <span className="text-2xl">📥</span> Importar treinos prontos
+          </Link>
+          <Link
+            to="/executar"
+            search={{ d: undefined }}
+            className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card px-4 py-4 text-center text-sm font-semibold shadow-soft transition hover:border-accent"
+          >
+            <span className="text-2xl">⏱️</span> Página de treino real
+          </Link>
         </div>
+
       </div>
     </main>
   );
