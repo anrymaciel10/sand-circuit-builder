@@ -1,5 +1,4 @@
 import {
-  ALONGAMENTOS,
   alongamentosPorTipo,
   todosExercicios,
   type Equipamento,
@@ -181,12 +180,13 @@ export function gerarCircuitoUnindo(
       },
       seed + idx * 977,
     );
+    let adicionados = 0;
     for (const est of parcial.estacoes) {
-      if (estacoes.length >= somaQuantidades(partes)) break;
+      if (adicionados >= parte.quantidade) break;
       if (usados.has(est.exercicio.id)) continue;
       usados.add(est.exercicio.id);
       estacoes.push({ ordem: estacoes.length + 1, exercicio: est.exercicio });
-      if (estacoes.filter((e) => true).length && contarDoPack(estacoes, parte) >= parte.quantidade) break;
+      adicionados++;
     }
   });
 
@@ -226,16 +226,7 @@ export function gerarCircuitoUnindo(
   };
 }
 
-function somaQuantidades(partes: { quantidade: number }[]) {
-  return partes.reduce((t, p) => t + Math.max(0, p.quantidade), 0);
-}
 
-function contarDoPack(
-  estacoes: Estacao[],
-  parte: { equipamentos: Equipamento[] },
-) {
-  return estacoes.filter((e) => parte.equipamentos.includes(e.exercicio.equipamento)).length;
-}
 
 export const PRESETS: Record<Formato, { nome: string; descricao: string; trabalho: number; descanso: number; rodadas: number }> = {
   tabata: { nome: "Tabata", descricao: "20s de esforço máximo / 10s de pausa", trabalho: 20, descanso: 10, rodadas: 4 },
