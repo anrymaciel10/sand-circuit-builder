@@ -64,6 +64,8 @@ export type Exercicio = {
   dica: string;
   busca: string; // termo usado para montar links de vídeo
   composto?: boolean; // combina duas ações em uma repetição / tem deslocamento
+  /** quando presente, é um alongamento/mobilidade e não entra no sorteio de estações */
+  alongamento?: TipoAlongamento;
   musculos?: string[];
   beneficio?: string;
   /** exercício importado por link (vídeo próprio, post do Instagram, Drive, etc.) */
@@ -729,7 +731,7 @@ export function definirExerciciosExtra(lista: Exercicio[]) {
 
 /** Base completa: catálogo + importados por link. */
 export function todosExercicios(): Exercicio[] {
-  return [...EXERCICIOS, ...EXERCICIOS_EXTRA];
+  return [...EXERCICIOS, ...ALONGAMENTOS, ...EXERCICIOS_EXTRA];
 }
 
 /* ---------------------------------------------------------------
