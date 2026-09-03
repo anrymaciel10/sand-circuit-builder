@@ -64,6 +64,8 @@ export type Exercicio = {
   dica: string;
   busca: string; // termo usado para montar links de vídeo
   composto?: boolean; // combina duas ações em uma repetição / tem deslocamento
+  /** quando presente, é um alongamento/mobilidade e não entra no sorteio de estações */
+  alongamento?: TipoAlongamento;
   musculos?: string[];
   beneficio?: string;
   /** exercício importado por link (vídeo próprio, post do Instagram, Drive, etc.) */
@@ -729,5 +731,124 @@ export function definirExerciciosExtra(lista: Exercicio[]) {
 
 /** Base completa: catálogo + importados por link. */
 export function todosExercicios(): Exercicio[] {
-  return [...EXERCICIOS, ...EXERCICIOS_EXTRA];
+  return [...EXERCICIOS, ...ALONGAMENTOS, ...EXERCICIOS_EXTRA];
+}
+
+/* ---------------------------------------------------------------
+ * Alongamentos e mobilidade
+ * ------------------------------------------------------------- */
+
+export type TipoAlongamento = "estatico" | "dinamico" | "mobilidade" | "brincadeira";
+
+export const TIPOS_ALONGAMENTO: {
+  id: TipoAlongamento;
+  nome: string;
+  emoji: string;
+  descricao: string;
+}[] = [
+  {
+    id: "estatico",
+    nome: "Estático",
+    emoji: "🧘",
+    descricao: "Posição mantida de 20 a 40s — ideal para a volta à calma.",
+  },
+  {
+    id: "dinamico",
+    nome: "Dinâmico",
+    emoji: "🏃",
+    descricao: "Movimento contínuo e amplo — perfeito para aquecer na areia.",
+  },
+  {
+    id: "mobilidade",
+    nome: "Mobilidade articular",
+    emoji: "🔄",
+    descricao: "Trabalha amplitude de quadril, ombro e coluna.",
+  },
+  {
+    id: "brincadeira",
+    nome: "Brincadeiras / lúdico",
+    emoji: "🎉",
+    descricao: "Alongamento dinâmico em forma de jogo, em dupla ou grupo.",
+  },
+];
+
+const al = (
+  id: string,
+  nome: string,
+  tipo: TipoAlongamento,
+  descricao: string,
+  dica: string,
+  musculos: string[],
+  beneficio: string,
+): Exercicio => ({
+  id,
+  nome,
+  equipamento: "peso-corporal",
+  foco: "equilibrio",
+  nivel: 1,
+  descricao,
+  dica,
+  busca: `${nome} alongamento`,
+  alongamento: tipo,
+  musculos,
+  beneficio,
+});
+
+export const ALONGAMENTOS: Exercicio[] = [
+  // Estáticos
+  al("al-e1", "Alongamento de posterior sentado", "estatico", "Sentado na areia, pernas estendidas, leve o tronco à frente sem arredondar demais a lombar.", "Segure 30s respirando fundo.", ["Isquiotibiais", "Lombar"], "Reduz encurtamento da cadeia posterior após corridas na areia."),
+  al("al-e2", "Alongamento de quadríceps em pé", "estatico", "Em pé, puxe o calcanhar até o glúteo mantendo os joelhos juntos.", "Use o parceiro ou um bastão para o equilíbrio na areia.", ["Quadríceps", "Flexores do quadril"], "Alivia a tensão da coxa depois de agachamentos e saltos."),
+  al("al-e3", "Panturrilha na rampa de areia", "estatico", "Apoie a ponta do pé em um desnível de areia e empurre o calcanhar para baixo.", "Mantenha o joelho estendido e depois repita semiflexionado.", ["Gastrocnêmio", "Sóleo"], "Previne cãibras e sobrecarga no tendão de aquiles."),
+  al("al-e4", "Borboleta (adutores)", "estatico", "Sentado, plantas dos pés unidas, deixe os joelhos caírem para os lados.", "Coluna alongada, empurre suavemente os joelhos.", ["Adutores", "Quadril"], "Abre o quadril e melhora a amplitude do agachamento."),
+  al("al-e5", "Alongamento de peitoral na duna", "estatico", "Braço apoiado em um poste/parceiro na altura do ombro e gire o tronco para o lado oposto.", "Ombro baixo e relaxado.", ["Peitoral", "Deltoide anterior"], "Melhora a postura após empurrões e flexões."),
+  al("al-e6", "Alongamento de tríceps atrás da cabeça", "estatico", "Cotovelo apontado ao céu, puxe suavemente com a outra mão.", "Não force o pescoço à frente.", ["Tríceps", "Grande dorsal"], "Recupera o braço após corda naval e empurrões."),
+  al("al-e7", "Figura 4 deitado", "estatico", "Deitado, tornozelo sobre o joelho oposto e puxe a coxa em direção ao peito.", "Ótimo para quem corre muito na areia.", ["Glúteo médio", "Piriforme"], "Alivia dor lombar e tensão no glúteo."),
+  al("al-e8", "Torção de coluna deitado", "estatico", "Deitado, leve o joelho cruzado ao lado oposto e olhe para o braço estendido.", "Ombros colados na areia.", ["Lombar", "Oblíquos"], "Descompressão da coluna no fim do treino."),
+  al("al-e9", "Postura da criança", "estatico", "Ajoelhado, sente sobre os calcanhares e alongue os braços à frente na areia.", "Respire fundo por 40s.", ["Lombar", "Grande dorsal", "Ombros"], "Relaxa e finaliza o treino com respiração."),
+  al("al-e10", "Alongamento de pescoço e trapézio", "estatico", "Incline a cabeça para o lado apoiando a mão levemente na têmpora.", "Ombro oposto puxado para baixo.", ["Trapézio", "Cervical"], "Solta a tensão do pescoço depois de pranchas e carregamentos."),
+  al("al-e11", "Alongamento de flexor do quadril (afundo baixo)", "estatico", "Joelho de trás na areia, empurre o quadril à frente mantendo o tronco ereto.", "Contraia o glúteo do lado alongado.", ["Iliopsoas", "Quadríceps"], "Essencial para quem passa o dia sentado."),
+  al("al-e12", "Alongamento lateral do tronco em pé", "estatico", "Braço acima da cabeça e incline o tronco para o lado oposto.", "Sem rodar o quadril.", ["Oblíquos", "Grande dorsal"], "Amplia a caixa torácica e a respiração."),
+
+  // Dinâmicos
+  al("al-d1", "Caminhada com afundo e rotação", "dinamico", "Passada longa e giro do tronco para o lado da perna da frente, avançando na areia.", "10 passadas para cada lado.", ["Quadril", "Oblíquos", "Glúteos"], "Aquece pernas e coluna torácica de uma vez."),
+  al("al-d2", "Bom dia caminhando (soldadinho)", "dinamico", "Chute a perna estendida à frente tocando a mão oposta a cada passo.", "Sem arredondar as costas.", ["Isquiotibiais", "Core"], "Prepara a cadeia posterior antes de sprints."),
+  al("al-d3", "Puxada de joelho ao peito caminhando", "dinamico", "A cada passo, abrace o joelho ao peito e suba na ponta do outro pé.", "Postura alta.", ["Glúteos", "Flexores do quadril"], "Ativa quadril e equilíbrio na areia fofa."),
+  al("al-d4", "Chute frontal alternado (soldado)", "dinamico", "Chutes altos alternados tocando a mão oposta enquanto avança.", "Amplitude confortável, sem travar o joelho.", ["Isquiotibiais", "Core"], "Aumenta a amplitude de quadril antes do circuito."),
+  al("al-d5", "Círculos de braço grandes", "dinamico", "Braços em círculos amplos à frente e atrás, aumentando a velocidade.", "20 para cada direção.", ["Ombros", "Peitoral"], "Aquece a articulação do ombro para empurrões e slams."),
+  al("al-d6", "Skipping com abertura de quadril", "dinamico", "Trote curto abrindo o joelho para fora a cada passo.", "Alterne com fechamento (de fora para dentro).", ["Quadril", "Adutores"], "Mobiliza o quadril em movimento, ideal para areia."),
+  al("al-d7", "Corrida lateral com braços cruzando", "dinamico", "Deslocamento lateral abrindo e cruzando os braços no peito.", "Troque o lado a cada 15 m.", ["Adutores", "Peitoral", "Ombros"], "Aquece quadril e tronco ao mesmo tempo."),
+  al("al-d8", "Inchworm (lagarta) na areia", "dinamico", "Mãos na areia, caminhe até a prancha, faça uma flexão opcional e volte caminhando os pés.", "Pernas o mais estendidas possível.", ["Isquiotibiais", "Core", "Ombros"], "Alonga posterior e ativa o core em um só movimento."),
+  al("al-d9", "Agachamento profundo com mobilidade torácica", "dinamico", "No fundo do agachamento, empurre o cotovelo contra o joelho e gire o braço para o céu.", "Calcanhares na areia.", ["Quadril", "Torácica", "Adutores"], "Melhora a profundidade do agachamento."),
+  al("al-d10", "Escorpião / cruzamento de perna deitado", "dinamico", "De bruços, leve o pé cruzando por cima até o lado oposto, alternando.", "Movimento controlado.", ["Lombar", "Glúteos", "Flexores"], "Solta a lombar sem impacto."),
+  al("al-d11", "Rotação de tronco em pé", "dinamico", "Pés afastados, gire o tronco deixando os braços baterem soltos no corpo.", "Quadril estável.", ["Oblíquos", "Coluna torácica"], "Prepara rotações e arremessos de bola."),
+  al("al-d12", "Cachorro olhando para baixo com pedalada", "dinamico", "Na posição de V invertido, alterne o calcanhar empurrando a areia.", "Alterne 20 vezes.", ["Panturrilhas", "Isquiotibiais", "Ombros"], "Alonga toda a cadeia posterior dinamicamente."),
+  al("al-d13", "Balanço de perna frente e trás", "dinamico", "Apoiado em um parceiro, balance a perna à frente e atrás com amplitude crescente.", "15 de cada lado, depois lateral.", ["Isquiotibiais", "Flexores do quadril"], "Aquecimento articular clássico antes de correr."),
+  al("al-d14", "Passada lateral com agachamento (caranguejo)", "dinamico", "Semi-agachado, ande lateralmente na areia mantendo o quadril baixo.", "Não junte totalmente os pés.", ["Glúteo médio", "Quadríceps"], "Ativa glúteos e alonga adutores em movimento."),
+
+  // Mobilidade
+  al("al-m1", "Gato e camelo", "mobilidade", "Em quatro apoios, alterne arredondar e arquear a coluna respirando.", "8 a 10 ciclos lentos.", ["Coluna", "Core"], "Lubrifica a coluna e melhora a consciência postural."),
+  al("al-m2", "Rotação torácica em quatro apoios", "mobilidade", "Mão na nuca, gire o cotovelo para o céu e depois para dentro.", "Quadril parado.", ["Coluna torácica", "Oblíquos"], "Ganha amplitude para arremessos e remadas."),
+  al("al-m3", "90/90 de quadril", "mobilidade", "Sentado com joelhos a 90°, gire de um lado ao outro sem usar as mãos.", "Tronco ereto.", ["Quadril", "Glúteos"], "Melhora rotação interna e externa do quadril."),
+  al("al-m4", "Círculos de tornozelo e pé na areia", "mobilidade", "Desenhe círculos com o tornozelo em ambos os sentidos, depois espalhe a areia com os dedos.", "10 para cada lado.", ["Tornozelo", "Pé"], "Fundamental para prevenir entorses no terreno instável."),
+  al("al-m5", "Deslizamento de ombro na areia (wall slide deitado)", "mobilidade", "Deitado de costas, deslize os braços em Y/W mantendo contato com a areia.", "Costelas para baixo.", ["Ombros", "Manguito rotador"], "Prepara os ombros para carga acima da cabeça."),
+  al("al-m6", "Agachamento cossaco", "mobilidade", "Desça lateralmente sobre uma perna mantendo a outra estendida, alternando.", "Calcanhar apoiado, peito alto.", ["Adutores", "Glúteos", "Quadríceps"], "Amplitude lateral do quadril e força unilateral."),
+  al("al-m7", "Ponte de glúteo com respiração", "mobilidade", "Deitado, suba o quadril, segure 3s e desça vértebra a vértebra.", "Aperte o glúteo no topo.", ["Glúteos", "Core", "Lombar"], "Reativa o glúteo e alonga o flexor do quadril."),
+  al("al-m8", "Alongamento de punho e antebraço", "mobilidade", "Em quatro apoios, gire as mãos e desloque o peso suavemente.", "Ideal antes de burpees e pranchas.", ["Punho", "Antebraço"], "Evita dores no punho em apoios na areia."),
+
+  // Brincadeiras / lúdico
+  al("al-b1", "Pega-pega do alongamento", "brincadeira", "Quem for pego fica parado numa posição de alongamento até outro colega 'libertar' imitando a posição.", "Rodadas de 2 min, troque o pegador.", ["Corpo inteiro"], "Alonga e aquece de forma divertida em grupo."),
+  al("al-b2", "Espelho em dupla", "brincadeira", "Um aluno cria uma posição de alongamento, o parceiro copia; troca a cada 20s.", "Incentive criatividade nas amplitudes.", ["Corpo inteiro"], "Melhora consciência corporal e integra a turma."),
+  al("al-b3", "Estátua alongada", "brincadeira", "Trote livre na areia; ao sinal, todos param na posição de alongamento que o professor gritar.", "Use músicas ou apito.", ["Corpo inteiro"], "Aquecimento lúdico com amplitude articular."),
+  al("al-b4", "Passa-bola com rotação em círculo", "brincadeira", "Em roda, passe a bola girando o tronco de um lado; inverta o sentido ao sinal.", "Pés fixos na areia.", ["Oblíquos", "Coluna torácica"], "Mobilidade de tronco brincando."),
+  al("al-b5", "Vivo ou morto do quadril", "brincadeira", "'Vivo' = agachamento profundo mantido 3s; 'morto' = sentar e alongar posterior.", "Quem errar paga 3 polichinelos.", ["Quadril", "Isquiotibiais"], "Mobilidade de quadril com clima de brincadeira."),
+  al("al-b6", "Corrida do caranguejo e do urso", "brincadeira", "Revezamento entre caminhada de caranguejo (de barriga para cima) e urso até o cone.", "Distâncias curtas de 10 m.", ["Ombros", "Core", "Quadril"], "Aquece e mobiliza ombros e quadril de forma lúdica."),
+  al("al-b7", "Túnel humano", "brincadeira", "A turma em fila com pernas abertas; o último passa por baixo alongando adutores até virar o primeiro.", "Peça amplitude máxima das pernas.", ["Adutores", "Lombar"], "Alongamento de adutores em equipe."),
+  al("al-b8", "Dança do bambolê imaginário", "brincadeira", "Círculos amplos de quadril em pé, mudando de direção ao comando.", "Amplitude grande e riso garantido.", ["Quadril", "Core"], "Mobilidade de quadril descontraída."),
+  al("al-b9", "Amarelinha de mobilidade", "brincadeira", "Desenhe casas na areia; em cada uma há uma tarefa (afundo, cossaco, rotação) antes de pular à próxima.", "Faça duas equipes competindo em tempo.", ["Corpo inteiro"], "Junta mobilidade, coordenação e diversão."),
+  al("al-b10", "Cabo de guerra leve com alongamento", "brincadeira", "Em duplas, puxem as mãos com pernas afastadas alternando quem alonga a posterior.", "Força suave e progressiva.", ["Isquiotibiais", "Costas"], "Alongamento assistido pelo parceiro."),
+];
+
+export function alongamentosPorTipo(tipos: TipoAlongamento[]) {
+  if (!tipos.length) return ALONGAMENTOS;
+  return ALONGAMENTOS.filter((a) => tipos.includes(a.alongamento!));
 }

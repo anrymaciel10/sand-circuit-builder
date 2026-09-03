@@ -51,6 +51,21 @@ export function exportarPDF(circuito: Circuito, titulo: string) {
     y += 8;
   }
 
+  if (circuito.alongamentos?.length) {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.text("Alongamento e mobilidade", margem, y);
+    y += 16;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    circuito.alongamentos.forEach((ex) => {
+      novaPaginaSeNecessario(20);
+      doc.text(`- ${ex.nome}`, margem + 8, y);
+      y += 15;
+    });
+    y += 8;
+  }
+
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
   doc.text("Circuito", margem, y);
