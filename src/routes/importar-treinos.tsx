@@ -100,6 +100,7 @@ function circuitoDeLista(nome: string, texto: string) {
       modalidade: "individual",
     },
     aquecimento: [],
+    alongamentos: [],
     estacoes,
     duracaoMin:
       Math.round(((preset.trabalho + preset.descanso) * estacoes.length * preset.rodadas) / 60) + 8,

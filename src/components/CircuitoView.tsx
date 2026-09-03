@@ -40,6 +40,13 @@ import {
 import { alternarFavorito, listarFavoritos, salvarTreino } from "@/lib/storage";
 import { exportarPDF } from "@/lib/pdf";
 
+const TIPO_AL_EMOJI: Record<string, string> = {
+  estatico: "🧘",
+  dinamico: "🏃",
+  mobilidade: "🔄",
+  brincadeira: "🎉",
+};
+
 const FOCO_LABEL: Record<string, string> = {
   forca: "Força",
   potencia: "Potência",
@@ -342,6 +349,22 @@ export function CircuitoView({
           <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
             {atual.aquecimento.map((ex) => (
               <li key={ex.id}>• {ex.nome}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {atual.alongamentos.length > 0 && (
+        <div className="rounded-2xl border border-dashed border-accent/50 bg-accent/5 p-4">
+          <h3 className="text-lg">Alongamento e mobilidade</h3>
+          <ul className="mt-2 space-y-2">
+            {atual.alongamentos.map((ex) => (
+              <li key={ex.id} className="text-sm">
+                <span className="font-semibold text-foreground">
+                  {TIPO_AL_EMOJI[ex.alongamento ?? "estatico"]} {ex.nome}
+                </span>
+                <span className="block text-muted-foreground">{ex.descricao}</span>
+              </li>
             ))}
           </ul>
         </div>
