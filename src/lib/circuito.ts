@@ -1,11 +1,14 @@
 import {
+  ALONGAMENTOS,
+  alongamentosPorTipo,
   todosExercicios,
   type Equipamento,
   type Exercicio,
   type Foco,
+  type TipoAlongamento,
 } from "@/data/exercises";
 
-export type Formato = "tabata" | "amrap" | "estacoes" | "emom";
+export type Formato = "tabata" | "amrap" | "estacoes" | "emom" | "intervalado";
 
 export type Modalidade = "individual" | "dupla" | "trio";
 
@@ -48,6 +51,10 @@ export type Config = {
   formato: Formato;
   modalidade: Modalidade;
   compostos?: boolean; // priorizar exercícios combinados / com deslocamento
+  /** tipos de alongamento desejados (estático, dinâmico, mobilidade, brincadeira) */
+  alongamentos?: TipoAlongamento[];
+  /** quantos alongamentos incluir no treino (0 = nenhum) */
+  qtdAlongamentos?: number;
 };
 
 export type Estacao = {
@@ -61,6 +68,7 @@ export type Circuito = {
   nome?: string | undefined;
   config: Config;
   aquecimento: Exercicio[];
+  alongamentos: Exercicio[];
   estacoes: Estacao[];
   duracaoMin: number;
 };
@@ -81,7 +89,9 @@ function embaralhar<T>(arr: T[], seed: number): T[] {
 
 export function exerciciosDisponiveis(equipamentos: Equipamento[]) {
   if (equipamentos.length === 0) return [];
-  return todosExercicios().filter((ex) => equipamentos.includes(ex.equipamento));
+  return todosExercicios().filter(
+    (ex) => !ex.alongamento && equipamentos.includes(ex.equipamento),
+  );
 }
 
 export function gerarCircuito(config: Config, seed = Date.now()): Circuito {
@@ -123,18 +133,108 @@ export function gerarCircuito(config: Config, seed = Date.now()): Circuito {
     seed + 7,
   ).slice(0, 3);
 
+  const tiposAl = config.alongamentos ?? [];
+  const qtdAl = config.qtdAlongamentos ?? (tiposAl.length ? 4 : 0);
+  const alongamentos = qtdAl
+    ? embaralhar(alongamentosPorTipo(tiposAl), seed + 31).slice(0, qtdAl)
+    : [];
+
   const segundos =
     (config.trabalho + config.descanso) * estacoes.length * config.rodadas;
-  const duracaoMin = Math.round(segundos / 60) + 8; // + aquecimento e volta à calma
+  const duracaoMin =
+    Math.round(segundos / 60) + 8 + Math.ceil(alongamentos.length / 2); // + aquecimento, alongamento e volta à calma
 
   return {
     id: String(seed),
     criadoEm: seed,
     config,
     aquecimento,
+    alongamentos,
     estacoes,
     duracaoMin,
   };
+}
+
+/**
+ * Une vários packs num só circuito, respeitando quantos exercícios
+ * o professor quer de cada pack.
+ */
+export function gerarCircuitoUnindo(
+  partes: { equipamentos: Equipamento[]; focos: Foco[]; nivel: 1 | 2 | 3; compostos?: boolean; quantidade: number }[],
+  base: Omit<Config, "equipamentos" | "focos" | "estacoes">,
+  seed = Date.now(),
+): Circuito {
+  const estacoes: Estacao[] = [];
+  const usados = new Set<string>();
+
+  partes.forEach((parte, idx) => {
+    if (parte.quantidade <= 0) return;
+    const parcial = gerarCircuito(
+      {
+        ...base,
+        equipamentos: parte.equipamentos,
+        focos: parte.focos,
+        nivel: parte.nivel,
+        compostos: parte.compostos,
+        estacoes: parte.quantidade + 4,
+        qtdAlongamentos: 0,
+      },
+      seed + idx * 977,
+    );
+    for (const est of parcial.estacoes) {
+      if (estacoes.length >= somaQuantidades(partes)) break;
+      if (usados.has(est.exercicio.id)) continue;
+      usados.add(est.exercicio.id);
+      estacoes.push({ ordem: estacoes.length + 1, exercicio: est.exercicio });
+      if (estacoes.filter((e) => true).length && contarDoPack(estacoes, parte) >= parte.quantidade) break;
+    }
+  });
+
+  const equipamentos = Array.from(new Set(partes.flatMap((p) => p.equipamentos)));
+  const focos = Array.from(new Set(partes.flatMap((p) => p.focos)));
+  const nivel = partes.reduce<1 | 2 | 3>((m, p) => (p.nivel > m ? p.nivel : m), 1);
+
+  const config: Config = {
+    ...base,
+    equipamentos,
+    focos,
+    nivel,
+    estacoes: estacoes.length,
+  };
+
+  const aquecimento = embaralhar(
+    exerciciosDisponiveis(equipamentos).filter((ex) => ex.nivel === 1),
+    seed + 13,
+  ).slice(0, 3);
+
+  const tiposAl = base.alongamentos ?? [];
+  const qtdAl = base.qtdAlongamentos ?? (tiposAl.length ? 4 : 0);
+  const alongamentos = qtdAl
+    ? embaralhar(alongamentosPorTipo(tiposAl), seed + 41).slice(0, qtdAl)
+    : [];
+
+  const segundos = (base.trabalho + base.descanso) * estacoes.length * base.rodadas;
+
+  return {
+    id: String(seed),
+    criadoEm: seed,
+    config,
+    aquecimento,
+    alongamentos,
+    estacoes,
+    duracaoMin: Math.round(segundos / 60) + 8 + Math.ceil(alongamentos.length / 2),
+  };
+}
+
+function somaQuantidades(partes: { quantidade: number }[]) {
+  return partes.reduce((t, p) => t + Math.max(0, p.quantidade), 0);
+}
+
+function contarDoPack(
+  estacoes: Estacao[],
+  parte: { equipamentos: Equipamento[] },
+) {
+  return estacoes.filter((e) => parte.equipamentos.includes(e.exercicio.equipamento)).length;
 }
 
 export const PRESETS: Record<Formato, { nome: string; descricao: string; trabalho: number; descanso: number; rodadas: number }> = {
@@ -142,6 +242,13 @@ export const PRESETS: Record<Formato, { nome: string; descricao: string; trabalh
   estacoes: { nome: "Estações", descricao: "40s de trabalho / 20s de troca", trabalho: 40, descanso: 20, rodadas: 3 },
   amrap: { nome: "AMRAP", descricao: "Máximo de voltas no tempo total", trabalho: 45, descanso: 15, rodadas: 3 },
   emom: { nome: "EMOM", descricao: "A cada minuto, um exercício novo", trabalho: 45, descanso: 15, rodadas: 4 },
+  intervalado: {
+    nome: "Intervalado 1x1",
+    descricao: "1 min de exercício / 1 min de descanso",
+    trabalho: 60,
+    descanso: 60,
+    rodadas: 2,
+  },
 };
 
 export function dinamicaDaEstacao(modalidade: Modalidade, nomeExercicio: string) {
@@ -153,6 +260,7 @@ export function serializarCircuito(c: Circuito) {
     c: c.config,
     e: c.estacoes.map((s) => s.exercicio.id),
     a: c.aquecimento.map((ex) => ex.id),
+    s: c.alongamentos.map((ex) => ex.id),
     d: c.duracaoMin,
     n: c.nome,
   };
@@ -165,6 +273,7 @@ export function desserializarCircuito(token: string): Circuito | null {
       c: Config;
       e: string[];
       a: string[];
+      s?: string[];
       d: number;
       n?: string;
     };
@@ -182,6 +291,7 @@ export function desserializarCircuito(token: string): Circuito | null {
       nome: raw.n,
       config: raw.c,
       aquecimento: raw.a.map(byId).filter(Boolean) as Exercicio[],
+      alongamentos: (raw.s ?? []).map(byId).filter(Boolean) as Exercicio[],
       estacoes,
       duracaoMin: raw.d,
     };
@@ -202,6 +312,9 @@ export function textoCompartilhar(c: Circuito) {
     ``,
     `CIRCUITO:`,
     ...c.estacoes.map((e) => `${e.ordem}. ${e.exercicio.nome} — ${e.exercicio.descricao}`),
+    ...(c.alongamentos.length
+      ? ["", "ALONGAMENTO / MOBILIDADE:", ...c.alongamentos.map((ex) => `• ${ex.nome}`)]
+      : []),
   ];
   return linhas.join("\n");
 }
