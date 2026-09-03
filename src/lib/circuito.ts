@@ -174,7 +174,7 @@ export function gerarCircuitoUnindo(
         equipamentos: parte.equipamentos,
         focos: parte.focos,
         nivel: parte.nivel,
-        compostos: parte.compostos,
+        compostos: parte.compostos ?? false,
         estacoes: parte.quantidade + 4,
         qtdAlongamentos: 0,
       },
