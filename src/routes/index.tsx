@@ -2,7 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Waves, Sparkles, ListChecks, FolderHeart, Instagram } from "lucide-react";
 import heroAreia from "@/assets/hero-areia.jpg";
-import { EQUIPAMENTOS, FOCOS, type Equipamento, type Foco } from "@/data/exercises";
+import {
+  EQUIPAMENTOS,
+  FOCOS,
+  TIPOS_ALONGAMENTO,
+  type Equipamento,
+  type Foco,
+  type TipoAlongamento,
+} from "@/data/exercises";
 import {
   MODALIDADES,
   PRESETS,
@@ -45,6 +52,8 @@ function Home() {
   const [formato, setFormato] = useState<Formato>("estacoes");
   const [modalidade, setModalidade] = useState<Modalidade>("individual");
   const [compostos, setCompostos] = useState(true);
+  const [tiposAlong, setTiposAlong] = useState<TipoAlongamento[]>(["dinamico", "estatico"]);
+  const [qtdAlong, setQtdAlong] = useState(4);
   const [circuito, setCircuito] = useState<Circuito | null>(null);
 
   const disponiveis = useMemo(() => exerciciosDisponiveis(equipamentos).length, [equipamentos]);
@@ -67,6 +76,8 @@ function Home() {
           formato,
           modalidade,
           compostos,
+          alongamentos: tiposAlong,
+          qtdAlongamentos: tiposAlong.length ? qtdAlong : 0,
         },
         Date.now(),
       ),
@@ -255,6 +266,51 @@ function Home() {
               </span>
             </span>
           </button>
+        </section>
+
+        <section className="rounded-3xl border border-border bg-card p-5 shadow-soft">
+          <h2 className="text-2xl">3. Alongamento e mobilidade</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Escolha os tipos que entram no treino. Os dinâmicos e as brincadeiras funcionam melhor
+            no aquecimento; os estáticos, na volta à calma.
+          </p>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {TIPOS_ALONGAMENTO.map((t) => {
+              const ativo = tiposAlong.includes(t.id);
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => toggle(tiposAlong, setTiposAlong, t.id)}
+                  className={`rounded-xl border p-3 text-left transition-colors ${
+                    ativo ? "border-accent bg-accent/10" : "border-border bg-background hover:border-accent"
+                  }`}
+                >
+                  <p className="font-display text-lg leading-none">
+                    {t.emoji} {t.nome}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">{t.descricao}</p>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-5 flex items-center justify-between">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Quantos alongamentos
+            </p>
+            <span className="font-display text-2xl text-accent">
+              {tiposAlong.length ? qtdAlong : 0}
+            </span>
+          </div>
+          <input
+            type="range"
+            min={0}
+            max={10}
+            value={qtdAlong}
+            onChange={(ev) => setQtdAlong(Number(ev.target.value))}
+            disabled={tiposAlong.length === 0}
+            className="mt-2 w-full accent-[oklch(0.652_0.178_44)] disabled:opacity-40"
+          />
         </section>
 
         <button
