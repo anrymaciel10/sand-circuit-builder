@@ -325,6 +325,42 @@ function ImportarTreinos() {
           </section>
         )}
 
+        {aba === "aquecimento" && (
+          <section className={`mt-4 ${caixa}`}>
+            <h2 className="text-2xl">Dinâmicas de aquecimento</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Cole uma dinâmica por linha (jogos, brincadeiras, mobilidade). O app monta um treino
+              começando com esse aquecimento.
+            </p>
+            <input
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              placeholder="Nome do treino"
+              className={`mt-3 ${campo}`}
+            />
+            <textarea
+              value={dinamicas}
+              onChange={(e) => setDinamicas(e.target.value)}
+              rows={8}
+              placeholder={"1. Pega-pega na areia\n2. Mobilidade de ombros com bastão\n3. Embaixadinha em dupla"}
+              className={`mt-2 ${campo}`}
+            />
+            <button
+              onClick={importarAquecimento}
+              disabled={!dinamicas.trim()}
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl bg-sunset px-6 py-3.5 font-display text-xl text-primary-foreground shadow-lift disabled:opacity-50"
+            >
+              <ClipboardPaste className="size-5" /> Montar treino com aquecimento
+            </button>
+            {naoEncontrados.length > 0 && (
+              <p className="mt-3 rounded-xl bg-secondary/60 p-3 text-xs text-muted-foreground">
+                Não reconhecidos: {naoEncontrados.join(", ")}. Você pode ajustar o aquecimento depois
+                na prévia.
+              </p>
+            )}
+          </section>
+        )}
+
         {aba === "packs" && (
           <section className="mt-4 space-y-3">
             {PACKS.map((p) => (
