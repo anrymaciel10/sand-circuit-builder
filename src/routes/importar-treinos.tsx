@@ -188,6 +188,17 @@ function ImportarTreinos() {
     );
   };
 
+  const importarAquecimento = () => {
+    const { circuito, naoEncontrados: faltando } = circuitoDeAquecimento(nome, dinamicas);
+    setNaoEncontrados(faltando);
+    setPrevia(circuito);
+    flash(
+      circuito
+        ? `${circuito.aquecimento.length} dinâmica(s) de aquecimento reconhecidas.`
+        : "Nenhuma dinâmica reconhecida — tente nomes mais próximos da biblioteca.",
+    );
+  };
+
   const importarPack = (packId: string) => {
     const pack = PACKS.find((p) => p.id === packId);
     if (!pack) return;
