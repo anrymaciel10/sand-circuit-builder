@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Waves, Sparkles, ListChecks, FolderHeart, Instagram } from "lucide-react";
 import heroAreia from "@/assets/hero-areia.jpg";
+import logoLifeTraining from "@/assets/logo-life-training.jpg";
 import {
   EQUIPAMENTOS,
   FOCOS,
@@ -97,11 +98,28 @@ function Home() {
           height={912}
           className="h-64 w-full object-cover sm:h-80"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-deep/90 via-deep/40 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 p-5">
-          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-sun">
-            <Waves className="size-4" /> Life Training
-          </p>
+        <div className="absolute inset-0 bg-gradient-to-t from-deep/95 via-deep/60 to-black/30" />
+        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+          <div className="flex items-center gap-3.5 mb-2">
+            <div className="relative">
+              <img
+                src={logoLifeTraining}
+                alt="Logo Life Training Treinamento Funcional"
+                className="h-14 w-14 rounded-2xl border-2 border-sun/90 bg-white object-cover shadow-lift transition-transform hover:scale-105"
+              />
+              <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-sun text-deep text-[10px] font-bold">
+                ✓
+              </span>
+            </div>
+            <div>
+              <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.25em] text-sun">
+                <Waves className="size-4" /> Life Training
+              </p>
+              <span className="text-[11px] font-medium tracking-wider text-white/80 uppercase">
+                Treinamento Funcional
+              </span>
+            </div>
+          </div>
           <h1 className="mt-2 max-w-md text-4xl leading-[0.95] text-white sm:text-5xl">
             Circuito funcional na areia, montado sozinho
           </h1>
