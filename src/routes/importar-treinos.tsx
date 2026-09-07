@@ -244,12 +244,13 @@ function ImportarTreinos() {
           um pack pronto.
         </p>
 
-        <div className="mt-4 grid grid-cols-3 gap-2">
+        <div className="mt-4 grid grid-cols-4 gap-2">
           {(
             [
               ["link", "Por link"],
               ["lista", "Colar lista"],
-              ["packs", "Packs prontos"],
+              ["packs", "Packs"],
+              ["aquecimento", "Aquecimento"],
             ] as const
           ).map(([id, rotulo]) => (
             <button
