@@ -112,11 +112,50 @@ const caixa = "rounded-3xl border border-border bg-card p-5 shadow-soft";
 const campo =
   "w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary";
 
+/** Monta um circuito leve cujo aquecimento são as dinâmicas coladas. */
+function circuitoDeAquecimento(nome: string, texto: string) {
+  const linhas = texto.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  const dinamicas: Exercicio[] = [];
+  const naoEncontrados: string[] = [];
+  for (const linha of linhas) {
+    const ex = casarExercicio(linha);
+    if (ex && !dinamicas.some((d) => d.id === ex.id)) {
+      dinamicas.push(ex);
+    } else if (!ex) {
+      naoEncontrados.push(linha);
+    }
+  }
+  if (!dinamicas.length) return { circuito: null, naoEncontrados };
+  const preset = PRESETS.estacoes;
+  const base = gerarCircuito(
+    {
+      equipamentos: ["peso-corporal"],
+      focos: [],
+      nivel: 2,
+      estacoes: 6,
+      rodadas: preset.rodadas,
+      trabalho: preset.trabalho,
+      descanso: preset.descanso,
+      formato: "estacoes",
+      modalidade: "individual",
+    },
+    Date.now(),
+  );
+  const circuito: Circuito = {
+    ...base,
+    nome: nome.trim() || "Treino com dinâmicas de aquecimento",
+    aquecimento: dinamicas,
+    duracaoMin: base.duracaoMin + Math.ceil(dinamicas.length / 2),
+  };
+  return { circuito, naoEncontrados };
+}
+
 function ImportarTreinos() {
-  const [aba, setAba] = useState<"link" | "lista" | "packs">("link");
+  const [aba, setAba] = useState<"link" | "lista" | "packs" | "aquecimento">("link");
   const [link, setLink] = useState("");
   const [nome, setNome] = useState("");
   const [lista, setLista] = useState("");
+  const [dinamicas, setDinamicas] = useState("");
   const [aviso, setAviso] = useState("");
   const [naoEncontrados, setNaoEncontrados] = useState<string[]>([]);
   const [previa, setPrevia] = useState<Circuito | null>(null);
@@ -146,6 +185,17 @@ function ImportarTreinos() {
       circuito
         ? `${circuito.estacoes.length} estações reconhecidas.`
         : "Nenhum exercício reconhecido — tente nomes mais próximos da biblioteca.",
+    );
+  };
+
+  const importarAquecimento = () => {
+    const { circuito, naoEncontrados: faltando } = circuitoDeAquecimento(nome, dinamicas);
+    setNaoEncontrados(faltando);
+    setPrevia(circuito);
+    flash(
+      circuito
+        ? `${circuito.aquecimento.length} dinâmica(s) de aquecimento reconhecidas.`
+        : "Nenhuma dinâmica reconhecida — tente nomes mais próximos da biblioteca.",
     );
   };
 
@@ -194,12 +244,13 @@ function ImportarTreinos() {
           um pack pronto.
         </p>
 
-        <div className="mt-4 grid grid-cols-3 gap-2">
+        <div className="mt-4 grid grid-cols-4 gap-2">
           {(
             [
               ["link", "Por link"],
               ["lista", "Colar lista"],
-              ["packs", "Packs prontos"],
+              ["packs", "Packs"],
+              ["aquecimento", "Aquecimento"],
             ] as const
           ).map(([id, rotulo]) => (
             <button
@@ -269,6 +320,42 @@ function ImportarTreinos() {
               <p className="mt-3 rounded-xl bg-secondary/60 p-3 text-xs text-muted-foreground">
                 Não reconhecidos: {naoEncontrados.join(", ")}. Você pode trocar as estações depois na
                 prévia.
+              </p>
+            )}
+          </section>
+        )}
+
+        {aba === "aquecimento" && (
+          <section className={`mt-4 ${caixa}`}>
+            <h2 className="text-2xl">Dinâmicas de aquecimento</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Cole uma dinâmica por linha (jogos, brincadeiras, mobilidade). O app monta um treino
+              começando com esse aquecimento.
+            </p>
+            <input
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              placeholder="Nome do treino"
+              className={`mt-3 ${campo}`}
+            />
+            <textarea
+              value={dinamicas}
+              onChange={(e) => setDinamicas(e.target.value)}
+              rows={8}
+              placeholder={"1. Pega-pega na areia\n2. Mobilidade de ombros com bastão\n3. Embaixadinha em dupla"}
+              className={`mt-2 ${campo}`}
+            />
+            <button
+              onClick={importarAquecimento}
+              disabled={!dinamicas.trim()}
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl bg-sunset px-6 py-3.5 font-display text-xl text-primary-foreground shadow-lift disabled:opacity-50"
+            >
+              <ClipboardPaste className="size-5" /> Montar treino com aquecimento
+            </button>
+            {naoEncontrados.length > 0 && (
+              <p className="mt-3 rounded-xl bg-secondary/60 p-3 text-xs text-muted-foreground">
+                Não reconhecidos: {naoEncontrados.join(", ")}. Você pode ajustar o aquecimento depois
+                na prévia.
               </p>
             )}
           </section>
