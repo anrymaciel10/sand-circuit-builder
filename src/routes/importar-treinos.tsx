@@ -112,11 +112,50 @@ const caixa = "rounded-3xl border border-border bg-card p-5 shadow-soft";
 const campo =
   "w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary";
 
+/** Monta um circuito leve cujo aquecimento são as dinâmicas coladas. */
+function circuitoDeAquecimento(nome: string, texto: string) {
+  const linhas = texto.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  const dinamicas: Exercicio[] = [];
+  const naoEncontrados: string[] = [];
+  for (const linha of linhas) {
+    const ex = casarExercicio(linha);
+    if (ex && !dinamicas.some((d) => d.id === ex.id)) {
+      dinamicas.push(ex);
+    } else if (!ex) {
+      naoEncontrados.push(linha);
+    }
+  }
+  if (!dinamicas.length) return { circuito: null, naoEncontrados };
+  const preset = PRESETS.estacoes;
+  const base = gerarCircuito(
+    {
+      equipamentos: ["peso-corporal"],
+      focos: [],
+      nivel: 2,
+      estacoes: 6,
+      rodadas: preset.rodadas,
+      trabalho: preset.trabalho,
+      descanso: preset.descanso,
+      formato: "estacoes",
+      modalidade: "individual",
+    },
+    Date.now(),
+  );
+  const circuito: Circuito = {
+    ...base,
+    nome: nome.trim() || "Treino com dinâmicas de aquecimento",
+    aquecimento: dinamicas,
+    duracaoMin: base.duracaoMin + Math.ceil(dinamicas.length / 2),
+  };
+  return { circuito, naoEncontrados };
+}
+
 function ImportarTreinos() {
-  const [aba, setAba] = useState<"link" | "lista" | "packs">("link");
+  const [aba, setAba] = useState<"link" | "lista" | "packs" | "aquecimento">("link");
   const [link, setLink] = useState("");
   const [nome, setNome] = useState("");
   const [lista, setLista] = useState("");
+  const [dinamicas, setDinamicas] = useState("");
   const [aviso, setAviso] = useState("");
   const [naoEncontrados, setNaoEncontrados] = useState<string[]>([]);
   const [previa, setPrevia] = useState<Circuito | null>(null);
